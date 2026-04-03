@@ -9,6 +9,8 @@
 ;4.在Leader模式下，按下的其他键会被记录下来，并在释放Leader键时根据记录的键来执行对应的操作。
 ;5.在Leader模式下，按下的其他键会在小框中提示当前的Leader键和输入的其他键。
 
+#Include libs\hjkl_move.ahk ; 包含hjkl_move.ahk文件，提供基于hjkl键的移动功能
+
 ;定义Leader键和Leader键的触发状态
 Leader1 := "CapsLock"
 Leader2 := "Space"
@@ -42,7 +44,7 @@ $CapsLock::
 KeysHandler(key) {
     global Leader2Active, Leader1Active
     ; Leader激活，调用处理函数
-    LeaderKeyHandler(key)
+    LeaderTimeKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
     if Leader2Active {
         ToolTip "Space: " . followingKeys
@@ -58,7 +60,7 @@ ControlKeysHandler(key) {
     ; 这里的key是类似于ThisHotkey的字符串，比如"$LAlt"，我们需要把前面的"$"去掉，得到"LAlt"
     key := SubStr(key, 2) ; 去掉前面的"~$"
     ; Leader激活，调用处理函数
-    LeaderKeyHandler(key)
+    LeaderTimeKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
     if Leader2Active {
         ToolTip "Space: " . followingKeys
@@ -90,11 +92,11 @@ $d:: KeysHandler("d")
 $e:: KeysHandler("e")
 $f:: KeysHandler("f")
 $g:: KeysHandler("g")
-$h:: KeysHandler("h")
+$h:: leaderMoveKeyHandler("h", followingKeys)  ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
 $i:: KeysHandler("i")
-$j:: KeysHandler("j")
-$k:: KeysHandler("k")
-$l:: KeysHandler("l")
+$j:: leaderMoveKeyHandler("j", followingKeys)   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$k:: leaderMoveKeyHandler("k", followingKeys)   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$l:: leaderMoveKeyHandler("l", followingKeys)   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
 $m:: KeysHandler("m")
 $n:: KeysHandler("n")
 $o:: KeysHandler("o")
@@ -116,7 +118,7 @@ $RAlt:: ControlKeysHandler(THisHotkey)
 #HotIf  ; 结束条件热键的定义
 
 ; 处理Leader模式下捕捉到的键
-LeaderKeyHandler(key) {
+LeaderTimeKeyDownHandler(key) {
     global followingKeys
     ; 如果followingKeys字符串已经包含了这个键，说明是重复按键，不处理
     if InStr(followingKeys, key) {
