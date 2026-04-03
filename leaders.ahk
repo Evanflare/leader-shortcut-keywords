@@ -193,7 +193,26 @@ do_leader2_logic() {
             Send "^v"  ; Ctrl+V 粘贴
         case "x":
             Send "^x"  ; Ctrl+X 剪切
-
+        case "ju":
+            Send "^+!u"  ; `space-j-u`焦点的上个和下个 `ctrl-shift-alt-u`
+        case "jx":
+            Send "^+!x"  ; `space-j-x`焦点的上个和下个 `ctrl-shift-alt-x`
+        case "zx":
+            Send "+!x"  ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
+        case "zu":
+            Send "+!u"  ; `space-z-u`焦点在组视窗的上一个 `shift-alt-u`
+        case "z1":
+            Send "^+!1"  ; `space-z-1`焦点在组1 `ctrl-shift-alt-1`
+        case "z2":
+            Send "^+!2"  ; `space-z-2`焦点在组2 `ctrl-shift-alt-2`
+        case "z3":
+            Send "^+!3"  ; `space-z-3`焦点在组3 `ctrl-shift-alt-3`
+        case "z4":
+            Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
+        case "bu":
+            Send "^!u"  ; `space-b-u`文件编辑视图中的上一个聚焦 `ctrl-alt-u`
+        case "bx":
+            Send "^!x"  ; `space-b-x`文件编辑视图中的下一个聚焦 `ctrl-alt-x`
             ; 下面是 Space+Alt 组合键的处理
         case "LAltks":
             Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
