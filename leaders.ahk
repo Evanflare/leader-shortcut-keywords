@@ -40,11 +40,6 @@ $CapsLock::
 ; 通用键处理函数，检查Leader是否激活
 KeysHandler(key) {
     global Leader2Active, Leader1Active
-    if !Leader2Active && !Leader1Active {
-        ; Leader未激活，放行
-        Send key
-        return
-    }
     ; Leader激活，调用处理函数
     LeaderKeyHandler(key)
     ; 小框提示当前Leader键和followingKeys
@@ -59,8 +54,8 @@ KeysHandler(key) {
 ; 控制键的处理函数，检查Leader是否激活
 ControlKeysHandler(key) {
     global Leader2Active, Leader1Active
-    ; 这里的key是类似于ThisHotkey的字符串，比如"~$LAlt"，我们需要把前面的"~$"去掉，得到"LAlt"
-    key := SubStr(key, 3) ; 去掉前面的"~$"
+    ; 这里的key是类似于ThisHotkey的字符串，比如"$LAlt"，我们需要把前面的"$"去掉，得到"LAlt"
+    key := SubStr(key, 2) ; 去掉前面的"~$"
     ; Leader激活，调用处理函数
     LeaderKeyHandler(key)
     ; 小框提示当前Leader键和followingKeys
@@ -73,6 +68,7 @@ ControlKeysHandler(key) {
 
 }
 
+#HotIf Leader2Active || Leader1Active  ; 只有在Leader模式激活时才捕捉下面的键
 ; Leader模式下对键盘的0-9键,a-z键的捕捉
 ; 捕捉0-9键
 $0:: KeysHandler("0")
@@ -114,8 +110,9 @@ $y:: KeysHandler("y")
 $z:: KeysHandler("z")
 
 ;  捕捉Alt键
-~$LAlt:: ControlKeysHandler(THisHotkey)  ; 捕捉左Alt键，传入当前热键作为参数
-~$RAlt:: ControlKeysHandler(THisHotkey)
+$LAlt:: ControlKeysHandler(THisHotkey)  ; 捕捉左Alt键，传入当前热键作为参数
+$RAlt:: ControlKeysHandler(THisHotkey)
+#HotIf  ; 结束条件热键的定义
 
 ; 处理Leader模式下捕捉到的键
 LeaderKeyHandler(key) {
