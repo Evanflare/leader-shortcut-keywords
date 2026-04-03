@@ -253,6 +253,10 @@ do_leader1_logic() {
             Send "^+o"  ; `caplock-o-d`打开文件夹`ctrl-shift-o`
         case "fr":
             Send "^+r"  ; `caplock-f-r`设置文件的只读性 `ctrl-shift-r`
+        case "t":
+            Send "^+!t"        ;`caplock-t` 跳到文件（内部搜索并打开）ctrl-shfit-alt-t
+        case "c":
+            Send "^{F4}"  ; `caplock-c` 关闭当前文件 `ctrl-F4`
         default:
             ; 不匹配，不做任何事
     }
