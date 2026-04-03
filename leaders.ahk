@@ -19,6 +19,7 @@ Leader2Active := false
 LeaderTimeout := 500 ; Leader模式的超时时间，单位为毫秒
 ;存储Leader时间内的其他键盘输入
 followingKeys := ""
+followingControlKeys := "" ; 存储Leader时间内的控制键输入，比如Alt键
 
 ; 首先处理Leader2（Space键）的功能
 ; Space按键的 按压事件捕捉
@@ -47,10 +48,10 @@ KeysHandler(key) {
     LeaderTimeKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
     if Leader2Active {
-        ToolTip "Space: " . followingKeys
+        ToolTip "Space: " . followingControlKeys . followingKeys
     }
     else if Leader1Active {
-        ToolTip "CapsLock: " . followingKeys
+        ToolTip "CapsLock: " . followingControlKeys . followingKeys
     }
 
 }
@@ -58,15 +59,15 @@ KeysHandler(key) {
 ControlKeysHandler(key) {
     global Leader2Active, Leader1Active
     ; 这里的key是类似于ThisHotkey的字符串，比如"$LAlt"，我们需要把前面的"$"去掉，得到"LAlt"
-    key := SubStr(key, 2) ; 去掉前面的"~$"
+    key := SubStr(key, 2) ; 去掉前面的"$"
     ; Leader激活，调用处理函数
-    LeaderTimeKeyDownHandler(key)
+    LeaderTimeControlKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
     if Leader2Active {
-        ToolTip "Space: " . followingKeys
+        ToolTip "Space: " . followingControlKeys . followingKeys
     }
     else if Leader1Active {
-        ToolTip "CapsLock: " . followingKeys
+        ToolTip "CapsLock: " . followingControlKeys . followingKeys
     }
 
 }
@@ -123,16 +124,27 @@ LeaderTimeKeyDownHandler(key) {
     ; 如果followingKeys字符串已经包含了这个键，说明是重复按键，不处理
     if InStr(followingKeys, key) {
         return
+    } else {
+        ; 将捕捉到的键追加在followingKeys字符串中
+        followingKeys .= key
     }
-    ; 将捕捉到的键追加在followingKeys字符串中
-    followingKeys .= key
+}
+LeaderTimeControlKeyDownHandler(key) {
+    global followingControlKeys
+    ; 如果followingControlKeys字符串已经包含了这个键，说明是重复按键，不处理
+    if InStr(followingControlKeys, key) {
+        return
+    } else {
+        ; 将捕捉到的控制键追加在followingControlKeys字符串中
+        followingControlKeys .= key
+    }
+
 }
 
 ; Space释放事件捕捉
 $Space Up::
 {
-    global followingKeys
-    global Leader2Active
+    global followingKeys, followingControlKeys, Leader2Active
     if followingKeys != "" {
         do_leader2_logic
     }
@@ -140,6 +152,7 @@ $Space Up::
         Send "{Space}"
     }
     followingKeys := "" ; 重置followingKeys字符串
+    followingControlKeys := "" ; 重置followingControlKeys字符串
     Leader2Active := false
     ; 关闭小框提示
     ToolTip
@@ -148,8 +161,7 @@ $Space Up::
 ; CapsLock释放事件捕捉
 $CapsLock Up::
 {
-    global followingKeys
-    global Leader1Active
+    global followingKeys, followingControlKeys, Leader1Active
     if followingKeys != "" {
         do_leader1_logic
     }
@@ -157,6 +169,7 @@ $CapsLock Up::
         ;Send "{CapsLock}" 没人希望按下CapsLock后又按一次才切换回原来的状态，所以这里不发送CapsLock键了
     }
     followingKeys := "" ; 重置followingKeys字符串
+    followingControlKeys := "" ; 重置followingControlKeys字符串
     Leader1Active := false
     ; 关闭小框提示
     ToolTip
@@ -164,6 +177,7 @@ $CapsLock Up::
 
 do_leader2_logic() {
     global followingKeys
+    followingKeys := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (followingKeys) {
         case "f":
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
@@ -185,6 +199,27 @@ do_leader2_logic() {
             Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
         case "RAltks":
             Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
+            ; 下面是视角切换的处理
+        case "LAltl1":
+            Send "^!1"  ; `space-alt-l-1`组视窗有 1列 `ctrl-alt-1`
+        case "LAltl2":
+            Send "^!2"  ;   `space-alt-l-2`组视窗有 2列 `ctrl-alt-2`
+        case "LAlth2":
+            Send "+!2"  ; `space-alt-h-2`组视窗有 2行 `shift-alt-2`
+        case "LAlth1":
+            Send "^!1"  ; `space-alt-h-1`组视窗有 1行 `ctrl-alt-1`
+        case "LAltwg":
+            Send "^!g"  ; `space-alt-w-g`组视窗呈网格 4窗 `ctrl-alt-g`
+        case "LAltux":
+            Send "^!x"  ; `space-alt-u-x`组视窗向下生，并复制当前的文件编辑视图 `ctrl-alt-x`
+        case "LAltuy":
+            Send "^!y"  ; `space-alt-u-y`组视窗向右生，并复制当前的文件编辑视图 `ctrl-alt-y`
+        case "LAltuz":
+            Send "^!z"  ; `space-alt-u-z` `ctrl-alt-z`
+        case "LAltu":
+            Send "^!u"  ; `space-alt-u` `ctrl-alt-u`
+        case "LAltuj":
+            Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
         default:
             ; 不匹配，不做任何事
     }
