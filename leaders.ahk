@@ -15,7 +15,7 @@ Leader2 := "Space"
 Leader1Active := false
 Leader2Active := false
 LeaderTimeout := 500 ; Leader模式的超时时间，单位为毫秒
-;定义Leader时间内的其他键盘输入
+;存储Leader时间内的其他键盘输入
 followingKeys := ""
 
 ; 首先处理Leader2（Space键）的功能
@@ -25,6 +25,7 @@ $Space::
     ;激活Leader2模式
     global Leader2Active
     Leader2Active := true
+    followingKeys := "" ; 重置followingKeys字符串
 
 }
 ; CapsLock按键的 按压事件捕捉
@@ -33,9 +34,10 @@ $CapsLock::
     ;激活Leader1模式
     global Leader1Active
     Leader1Active := true
+    followingKeys := "" ; 重置followingKeys字符串
 }
 
-; 通用键处理函数，检查Leader2是否激活
+; 通用键处理函数，检查Leader是否激活
 KeysHandler(key) {
     global Leader2Active, Leader1Active
     if !Leader2Active && !Leader1Active {
@@ -43,6 +45,22 @@ KeysHandler(key) {
         Send key
         return
     }
+    ; Leader激活，调用处理函数
+    LeaderKeyHandler(key)
+    ; 小框提示当前Leader键和followingKeys
+    if Leader2Active {
+        ToolTip "Space: " . followingKeys
+    }
+    else if Leader1Active {
+        ToolTip "CapsLock: " . followingKeys
+    }
+
+}
+; 控制键的处理函数，检查Leader是否激活
+ControlKeysHandler(key) {
+    global Leader2Active, Leader1Active
+    ; 这里的key是类似于ThisHotkey的字符串，比如"~$LAlt"，我们需要把前面的"~$"去掉，得到"LAlt"
+    key := SubStr(key, 3) ; 去掉前面的"~$"
     ; Leader激活，调用处理函数
     LeaderKeyHandler(key)
     ; 小框提示当前Leader键和followingKeys
@@ -95,7 +113,11 @@ $x:: KeysHandler("x")
 $y:: KeysHandler("y")
 $z:: KeysHandler("z")
 
-; 处理捕捉到的键
+;  捕捉Alt键
+~$LAlt:: ControlKeysHandler(THisHotkey)  ; 捕捉左Alt键，传入当前热键作为参数
+~$RAlt:: ControlKeysHandler(THisHotkey)
+
+; 处理Leader模式下捕捉到的键
 LeaderKeyHandler(key) {
     global followingKeys
     ; 如果followingKeys字符串已经包含了这个键，说明是重复按键，不处理
@@ -155,6 +177,12 @@ do_leader2_logic() {
             Send "^c"  ; Ctrl+C 复制
         case "v":
             Send "^v"  ; Ctrl+V 粘贴
+        case "x":
+            Send "^x"  ; Ctrl+X 剪切
+            ; 下面是 Space+Alt 组合键的处理
+        case "LAltks":
+        case "RAltks":
+            Send "^!k"  ; `space-alt-k`打开快捷方式 `ctrl-alt-k`
         default:
             ; 不匹配，不做任何事
     }
