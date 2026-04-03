@@ -24,7 +24,7 @@ alt所负责的功能，大致含义是 内部操作。
 ## 编辑器内部操作
 
 - `space-f` 搜文件内容`ctrl-f`
-- `space-f-d`搜索目录内容 `ctrl-shift-d`
+- `space-f-d`搜索目录内容 `ctrl-shift-f`
 - `space-s` 保存文件  `ctrl-s`
 - `space-a` 选中所有内容  `ctrl-a`
 - `space-x` 剪切  `ctrl-x`

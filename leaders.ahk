@@ -166,7 +166,7 @@ do_leader2_logic() {
         case "f":
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
         case "fd":
-            Send "^+d"  ; `space-f-d`搜索目录内容 `ctrl-shift-d`
+            Send "^+f"  ; `space-f-d`搜索目录内容 `ctrl-shift-f`
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
