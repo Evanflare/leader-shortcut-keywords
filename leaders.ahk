@@ -26,7 +26,7 @@ $Space::
     global Leader2Active
     Leader2Active := true
     followingKeys := "" ; 重置followingKeys字符串
-
+    ToolTip "Space: " ; 显示小框提示，初始状态只显示Leader键
 }
 ; CapsLock按键的 按压事件捕捉
 $CapsLock::
@@ -35,6 +35,7 @@ $CapsLock::
     global Leader1Active
     Leader1Active := true
     followingKeys := "" ; 重置followingKeys字符串
+    ToolTip "CapsLock: " ; 显示小框提示，初始状态只显示Leader键
 }
 
 ; 通用键处理函数，检查Leader是否激活
