@@ -179,7 +179,9 @@ do_leader2_logic() {
             Send "^x"  ; Ctrl+X 剪切
 
             ; 下面是 Space+Alt 组合键的处理
-        case "LAltks" or "RAltks":
+        case "LAltks":
+            Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
+        case "RAltks":
             Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
         default:
             ; 不匹配，不做任何事
