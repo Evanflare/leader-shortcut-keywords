@@ -2,7 +2,7 @@
 
 ; 这是一个库文件，提供了基于hjkl键的移动功能。
 
-#Include ..\leaders.ahk
+#Include ..\leader.ahk
 
 ; 判断：如果followingKeys 中的字符等同当前按下的key，则说明是单纯的hjkl移动，否则说明是其他功能，直接调用KeysHandler处理
 leaderMoveKeyHandler(key, followingKeys) {
