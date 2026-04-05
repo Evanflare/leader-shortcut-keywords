@@ -241,7 +241,7 @@ do_leader2_logic() {
             Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
         default:
             ; 不匹配，小小提示音
-            SoundBeep 1500, 100
+            SoundPlay("*-1")
     }
 }
 
@@ -261,6 +261,6 @@ do_leader1_logic() {
             Send "^{F4}"  ; `caplock-c` 关闭当前文件 `ctrl-F4`
         default:
             ; 不匹配，小小提示音
-            SoundBeep 1500, 100
+            SoundPlay("*-1")
     }
 }
