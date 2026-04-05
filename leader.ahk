@@ -149,7 +149,9 @@ $Space Up::
         do_leader2_logic
     }
     else {
-        Send "{Space}"
+        if !GetKeyState("Home", "P") {  ; 如果Home键没有被按下，发送Space键
+            Send "{Space}"
+        }
     }
     followingKeys := "" ; 重置followingKeys字符串
     followingControlKeys := "" ; 重置followingControlKeys字符串
