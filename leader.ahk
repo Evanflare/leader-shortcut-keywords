@@ -176,9 +176,9 @@ $CapsLock Up::
 }
 
 do_leader2_logic() {
-    global followingKeys
-    followingKeys := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
-    switch (followingKeys) {
+    global followingKeys, followingControlKeys
+    shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    switch (shortcutKeywords) {
         case "f":
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
         case "fd":
@@ -246,8 +246,9 @@ do_leader2_logic() {
 }
 
 do_leader1_logic() {
-    global followingKeys
-    switch (followingKeys) {
+    global followingKeys, followingControlKeys
+    shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    switch (shortcutKeywords) {
         case "o":
             Send "^o"  ; `caplock-o`打开文件`ctrl-o`
         case "od":
