@@ -18,6 +18,7 @@ alt所负责的功能，大致含义是 内部操作。
 - `caplock-o`打开文件`ctrl-o`
 - `caplock-o-d`打开文件夹`ctrl-shift-o`
 - `caplock-f-r`设置文件的只读性 `ctrl-shift-r`
+- `caplock-n` 新建文件
 
 ## 编辑器内部操作
 

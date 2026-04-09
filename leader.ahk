@@ -116,7 +116,23 @@ $z:: KeysHandler("z")
 ;  捕捉Alt键
 $LAlt:: ControlKeysHandler(THisHotkey)  ; 捕捉左Alt键，传入当前热键作为参数
 $RAlt:: ControlKeysHandler(THisHotkey)
+
 #HotIf  ; 结束条件热键的定义
+
+; 全模式监听win键，解决win+Space切换输入法误发Space的问题
+winKeyState := false
+; 定时器在win键松开300ms之后重置winKeyState状态，避免误触发
+~$LWin::
+{
+    global winKeyState
+    winKeyState := true
+    SetTimer ResetWinKeyState, -300
+}
+
+ResetWinKeyState() {
+    global winKeyState
+    winKeyState := false
+}
 
 ; 处理Leader模式下捕捉到的键
 LeaderTimeKeyDownHandler(key) {
@@ -149,7 +165,7 @@ $Space Up::
         do_leader2_logic
     }
     else {
-        if !GetKeyState("Home", "P") {  ; 如果Home键没有被按下，发送Space键
+        if !winKeyState {  ; 如果Win键没有被按下，发送Space键
             Send "{Space}"
         }
     }
@@ -261,6 +277,8 @@ do_leader1_logic() {
             Send "^+!t"        ;`caplock-t` 跳到文件（内部搜索并打开）ctrl-shfit-alt-t
         case "c":
             Send "^{F4}"  ; `caplock-c` 关闭当前文件 `ctrl-F4`
+        case "n":
+            Send "^n"  ; `caplock-n` 新建文件 `ctrl-n`
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
