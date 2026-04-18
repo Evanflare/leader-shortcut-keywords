@@ -228,9 +228,9 @@ do_leader2_logic() {
         case "z4":
             Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
         case "bu":
-            Send "^!u"  ; `space-b-u`文件编辑视图中的上一个聚焦 `ctrl-alt-u`
+            Send "#!u"  ; `space-b-u`文件编辑视图中的上一个聚焦 `win-alt-u`
         case "bx":
-            Send "^!x"  ; `space-b-x`文件编辑视图中的下一个聚焦 `ctrl-alt-x`
+            Send "#!x"  ; `space-b-x`文件编辑视图中的下一个聚焦 `win-alt-x`
             ; 下面是 Space+Alt 组合键的处理
         case "LAltks":
             Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
