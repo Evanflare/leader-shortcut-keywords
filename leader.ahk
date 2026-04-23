@@ -233,10 +233,6 @@ do_leader2_logic() {
             Send "^+!3"  ; `space-z-3`焦点在组3 `ctrl-shift-alt-3`
         case "z4":
             Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
-        case "bu":
-            Send "#!u"  ; `space-b-u`文件编辑视图中的上一个聚焦 `win-alt-u`
-        case "bx":
-            Send "#!x"  ; `space-b-x`文件编辑视图中的下一个聚焦 `win-alt-x`
         case "tty":
             Run "wt.exe"  ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，y是terminal的第二个字母
         case "wt":
