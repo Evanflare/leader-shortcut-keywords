@@ -220,11 +220,11 @@ do_leader2_logic() {
         case "zx":
             Send "+!x" ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
         case "zy":
-            Send "+!x" ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
+            Send "+!y" ; `space-z-y`焦点在组视窗的下一个 `shift-alt-y`
         case "zu":
             Send "+!u"  ; `space-z-u`焦点在组视窗的上一个 `shift-alt-u`
         case "zz":
-            Send "+!u"  ; `space-z-z`焦点在组视窗的上一个 `shift-alt-u`
+            Send "+!z"  ; `space-z-z`焦点在组视窗的上一个 `shift-alt-z`
         case "z1":
             Send "^+!1"  ; `space-z-1`焦点在组1 `ctrl-shift-alt-1`
         case "z2":
