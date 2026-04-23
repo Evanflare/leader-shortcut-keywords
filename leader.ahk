@@ -138,12 +138,14 @@ ResetWinKeyState() {
 LeaderTimeKeyDownHandler(key) {
     global followingKeys
     ; 如果followingKeys字符串已经包含了这个键，说明是重复按键，不处理
-    if InStr(followingKeys, key) {
-        return
-    } else {
-        ; 将捕捉到的键追加在followingKeys字符串中
-        followingKeys .= key
-    }
+    ;    if InStr(followingKeys, key) {
+    ;        return
+    ;    } else {
+    ;        ; 将捕捉到的键追加在followingKeys字符串中
+    ;        followingKeys .= key
+    ;    }
+    ; 这里控制键我们不去重，因为有些组合快捷键是需要同时按下多个控制键的，比如 space-t-t-y，所以我们允许重复按下控制键，直接追加就行了
+    followingKeys .= key
 }
 LeaderTimeControlKeyDownHandler(key) {
     global followingControlKeys
@@ -231,6 +233,12 @@ do_leader2_logic() {
             Send "#!u"  ; `space-b-u`文件编辑视图中的上一个聚焦 `win-alt-u`
         case "bx":
             Send "#!x"  ; `space-b-x`文件编辑视图中的下一个聚焦 `win-alt-x`
+        case "tty":
+            Run "wt.exe"  ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，y是terminal的第二个字母
+        case "wt":
+            ; 打开终端的命令是%LocalAppData%\Microsoft\WindowsApps\wt.exe，所以我们直接运行这个命令就可以了
+            Run "wt.exe"  ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，l是terminal的第一个字母
+
             ; 下面是 Space+Alt 组合键的处理
         case "LAltks":
             Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
