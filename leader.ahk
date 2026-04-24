@@ -203,6 +203,12 @@ do_leader2_logic() {
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
         case "fd":
             Send "^+f"  ; `space-f-d`搜索目录内容 `ctrl-shift-f`
+        case "fh":
+            Send "^+a" ; `space-f-h`搜索文件路径 `ctrl-shift-a`
+        case "l":
+            Send "^l"  ; `space-l` 聚焦到地址栏 `ctrl-l`
+        case "m":
+            Send "^!m"  ; `space-m` 聚焦中部页面 `ctrl-alt-m`
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
