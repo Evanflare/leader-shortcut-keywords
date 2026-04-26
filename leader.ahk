@@ -263,11 +263,38 @@ do_leader2_logic() {
         case "z4":
             Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
         case "tty":
-            Run "wt.exe"  ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，y是terminal的第二个字母
+            ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，y是terminal的第二个字母
+            ; 1. 启动并获取 PID（官方推荐精准匹配方式）
+            Run "wt.exe --window new", , , &pid
+
+            ; 2. 等待窗口出现（官方必用步骤）
+            hwnd := WinWait("ahk_pid " pid, , 2)
+            if (!hwnd)
+                return
+
+            ; 3. 官方激活（内部已含重试与 Alt 解锁）
+            WinActivate(hwnd)
+
+            ; 4. 确保窗口可见（防止被最小化/隐藏）
+            WinRestore(hwnd)
+            WinShow(hwnd)
         case "wt":
             ; 打开终端的命令是%LocalAppData%\Microsoft\WindowsApps\wt.exe，所以我们直接运行这个命令就可以了
-            Run "wt.exe"  ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，l是terminal的第一个字母
+            ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，l是terminal的第一个字母
+            ; 1. 启动并获取 PID（官方推荐精准匹配方式）
+            Run "wt.exe --window new", , , &pid
 
+            ; 2. 等待窗口出现（官方必用步骤）
+            hwnd := WinWait("ahk_pid " pid, , 2)
+            if (!hwnd)
+                return
+
+            ; 3. 官方激活（内部已含重试与 Alt 解锁）
+            WinActivate(hwnd)
+
+            ; 4. 确保窗口可见（防止被最小化/隐藏）
+            WinRestore(hwnd)
+            WinShow(hwnd)
             ; 下面是 Space+Alt 组合键的处理
         case "LAltks":
             Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
