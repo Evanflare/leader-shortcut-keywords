@@ -209,6 +209,11 @@ do_leader2_logic() {
             Send "^l"  ; `space-l` 聚焦到地址栏 `ctrl-l`
         case "m":
             Send "^!m"  ; `space-m` 聚焦中部页面 `ctrl-alt-m`
+        case "n":
+            Send "^!n"  ; `space-n` 聚焦到非编辑控件 `ctrl-alt-n`
+        case "k":
+            Send "^+k"  ; `space-k` 跳出括号对 `ctrl-shift-k`
+
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
