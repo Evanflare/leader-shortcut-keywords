@@ -20,6 +20,8 @@ LeaderTimeout := 500 ; Leader模式的超时时间，单位为毫秒
 ;存储Leader时间内的其他键盘输入
 followingKeys := ""
 followingControlKeys := "" ; 存储Leader时间内的控制键输入，比如Alt键
+; 定义一个命令含义填充标志，用于防止命令重复执行。空表示没有命令正在执行，非空表示有命令正在执行，值是快捷键的映射映射结果。
+commandResult := ""
 
 ; 首先处理Leader2（Space键）的功能
 ; Space按键的 按压事件捕捉
@@ -159,6 +161,19 @@ LeaderTimeControlKeyDownHandler(key) {
 
 }
 
+; 定义一个引导键释放时触发的析构函数，用于重置状态和执行命令)
+LeaderDestructor() {
+    global Leader1Active, Leader2Active, followingKeys, followingControlKeys, commandResult
+    ; 重置状态
+    followingControlKeys := "" ; 重置followingControlKeys字符串
+    followingKeys := "" ; 重置followingKeys字符串
+    commandResult := "" ; 重置commandResult为空，表示没有命令正在执行了
+    Leader1Active := false
+    Leader2Active := false
+    ;
+    ToolTip
+}
+
 ; Space释放事件捕捉
 $Space Up::
 {
@@ -171,9 +186,8 @@ $Space Up::
             Send "{Space}"
         }
     }
-    followingKeys := "" ; 重置followingKeys字符串
-    followingControlKeys := "" ; 重置followingControlKeys字符串
-    Leader2Active := false
+    LeaderDestructor() ; 调用析构函数，重置状态和执行命令
+    ; TODO: 这里潜藏了bug，如果同时按下两个Leader键，比如先按下Space，再按下CapsLock，然后释放Space，这时候会执行Leader2的命令，但是Leader1的状态没有被重置，导致后续的CapsLock释放会执行两次命令，所以这里我们需要在释放Space的时候重置Leader1Active状态，避免这个问题。
     ; 关闭小框提示
     ToolTip
 }
@@ -188,15 +202,19 @@ $CapsLock Up::
     else {
         ;Send "{CapsLock}" 没人希望按下CapsLock后又按一次才切换回原来的状态，所以这里不发送CapsLock键了
     }
-    followingKeys := "" ; 重置followingKeys字符串
-    followingControlKeys := "" ; 重置followingControlKeys字符串
-    Leader1Active := false
+    LeaderDestructor() ; 调用析构函数，重置状态和执行命令
+    ; TODO: 这里潜藏了bug，如果同时按下两个Leader键，比如先按下Space，再按下CapsLock，然后释放CapsLock，这时候会执行Leader1的命令，但是Leader2的状态没有被重置，导致后续的Space释放会执行两次命令，所以这里我们需要在释放CapsLock的时候重置Leader2Active状态，避免这个问题。
     ; 关闭小框提示
     ToolTip
 }
 
 do_leader2_logic() {
-    global followingKeys, followingControlKeys
+    global followingKeys, followingControlKeys, commandResult
+    if commandResult == "" {
+        commandResult := "leader2"
+    } else if commandResult != "leader2" {
+        return ;如果有命令正在执行，说明不是leader2的命令，直接返回
+    }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {
         case "f":
@@ -283,7 +301,12 @@ do_leader2_logic() {
 }
 
 do_leader1_logic() {
-    global followingKeys, followingControlKeys
+    global followingKeys, followingControlKeys, commandResult
+    if commandResult == "" {
+        commandResult := "leader1"
+    } else if commandResult != "leader1" {
+        return ;如果有命令正在执行，说明不是leader1的命令，直接返回
+    }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {
         case "o":

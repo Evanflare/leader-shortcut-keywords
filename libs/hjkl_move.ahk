@@ -6,9 +6,16 @@
 
 ; 判断：如果followingKeys 中的字符等同当前按下的key，则说明是单纯的hjkl移动，否则说明是其他功能，直接调用KeysHandler处理
 leaderMoveKeyHandler(key, followingKeys) {
+
     if followingKeys != key {
         KeysHandler(key) ;如果有其他键被按下，说明不是单纯的hjkl移动，直接返回
     } else {
+        global commandResult
+        if commandResult == "" {
+            commandResult := "leftdownupright"
+        } else if commandResult != "leftdownupright" {
+            return ;如果有命令正在执行，说明不是单纯的hjkl移动，直接返回
+        }
         switch key {
             case "h":
                 Send "{Left}"
@@ -18,6 +25,8 @@ leaderMoveKeyHandler(key, followingKeys) {
                 Send "{Up}"
             case "l":
                 Send "{Right}"
+            default:
+                commandResult := "" ;如果按下的不是hjkl键，重置commandResult为空，表示没有命令正在执行了
         }
     }
 }
