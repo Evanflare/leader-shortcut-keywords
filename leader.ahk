@@ -245,6 +245,8 @@ do_leader2_logic() {
             Send "^+y"  ; `space-d-e`删除到行尾 `ctrl-shift-y`
         case "cls":
             Send "^+c"  ; `space-c-l-s`清空终端 `ctrl-shift-c`
+        case "x":
+            Send "^+x"  ; `space-x`删除当前字符 `ctrl-shift-x`
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
