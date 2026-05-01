@@ -277,6 +277,60 @@ do_leader2_logic() {
             Send "^+!3"  ; `space-z-3`焦点在组3 `ctrl-shift-alt-3`
         case "z4":
             Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
+        case "LAltks":
+            Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
+        case "RAltks":
+            Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
+            ; 下面是视角切换的处理
+        case "LAltl1":
+            Send "^!1"  ; `space-alt-l-1`组视窗有 1列 `ctrl-alt-1`
+        case "LAltl2":
+            Send "^!2"  ;   `space-alt-l-2`组视窗有 2列 `ctrl-alt-2`
+        case "LAlth2":
+            Send "+!2"  ; `space-alt-h-2`组视窗有 2行 `shift-alt-2`
+        case "LAlth1":
+            Send "^!1"  ; `space-alt-h-1`组视窗有 1行 `ctrl-alt-1`
+        case "LAltwg":
+            Send "^!g"  ; `space-alt-w-g`组视窗呈网格 4窗 `ctrl-alt-g`
+        case "LAltux":
+            Send "^!x"  ; `space-alt-u-x`组视窗向下生，并复制当前的文件编辑视图 `ctrl-alt-x`
+        case "LAltuy":
+            Send "^!y"  ; `space-alt-u-y`组视窗向右生，并复制当前的文件编辑视图 `ctrl-alt-y`
+        case "LAltuz":
+            Send "^!z"  ; `space-alt-u-z` `ctrl-alt-z`
+        case "LAltu":
+            Send "^!u"  ; `space-alt-u` `ctrl-alt-u`
+        case "LAltuj":
+            Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
+        case "LAltls":
+            Send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
+        default:
+            ; 不匹配，小小提示音
+            SoundPlay("*-1")
+    }
+}
+
+do_leader1_logic() {
+    global followingKeys, followingControlKeys, commandResult
+    if commandResult == "" {
+        commandResult := "leader1"
+    } else if commandResult != "leader1" {
+        return ;如果有命令正在执行，说明不是leader1的命令，直接返回
+    }
+    shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    switch (shortcutKeywords) {
+        case "o":
+            Send "^o"  ; `caplock-o`打开文件`ctrl-o`
+        case "od":
+            Send "^+o"  ; `caplock-o-d`打开文件夹`ctrl-shift-o`
+        case "fr":
+            Send "^+r"  ; `caplock-f-r`设置文件的只读性 `ctrl-shift-r`
+        case "t":
+            Send "^+!t"        ;`caplock-t` 跳到文件（内部搜索并打开）ctrl-shfit-alt-t
+        case "c":
+            Send "^{F4}"  ; `caplock-c` 关闭当前文件 `ctrl-F4`
+        case "n":
+            Send "^n"  ; `caplock-n` 新建文件 `ctrl-n`
         case "tty":
             ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，y是terminal的第二个字母
             ; 1. 启动并获取 PID（官方推荐精准匹配方式）
@@ -311,58 +365,6 @@ do_leader2_logic() {
             WinRestore(hwnd)
             WinShow(hwnd)
             ; 下面是 Space+Alt 组合键的处理
-        case "LAltks":
-            Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
-        case "RAltks":
-            Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
-            ; 下面是视角切换的处理
-        case "LAltl1":
-            Send "^!1"  ; `space-alt-l-1`组视窗有 1列 `ctrl-alt-1`
-        case "LAltl2":
-            Send "^!2"  ;   `space-alt-l-2`组视窗有 2列 `ctrl-alt-2`
-        case "LAlth2":
-            Send "+!2"  ; `space-alt-h-2`组视窗有 2行 `shift-alt-2`
-        case "LAlth1":
-            Send "^!1"  ; `space-alt-h-1`组视窗有 1行 `ctrl-alt-1`
-        case "LAltwg":
-            Send "^!g"  ; `space-alt-w-g`组视窗呈网格 4窗 `ctrl-alt-g`
-        case "LAltux":
-            Send "^!x"  ; `space-alt-u-x`组视窗向下生，并复制当前的文件编辑视图 `ctrl-alt-x`
-        case "LAltuy":
-            Send "^!y"  ; `space-alt-u-y`组视窗向右生，并复制当前的文件编辑视图 `ctrl-alt-y`
-        case "LAltuz":
-            Send "^!z"  ; `space-alt-u-z` `ctrl-alt-z`
-        case "LAltu":
-            Send "^!u"  ; `space-alt-u` `ctrl-alt-u`
-        case "LAltuj":
-            Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
-        default:
-            ; 不匹配，小小提示音
-            SoundPlay("*-1")
-    }
-}
-
-do_leader1_logic() {
-    global followingKeys, followingControlKeys, commandResult
-    if commandResult == "" {
-        commandResult := "leader1"
-    } else if commandResult != "leader1" {
-        return ;如果有命令正在执行，说明不是leader1的命令，直接返回
-    }
-    shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
-    switch (shortcutKeywords) {
-        case "o":
-            Send "^o"  ; `caplock-o`打开文件`ctrl-o`
-        case "od":
-            Send "^+o"  ; `caplock-o-d`打开文件夹`ctrl-shift-o`
-        case "fr":
-            Send "^+r"  ; `caplock-f-r`设置文件的只读性 `ctrl-shift-r`
-        case "t":
-            Send "^+!t"        ;`caplock-t` 跳到文件（内部搜索并打开）ctrl-shfit-alt-t
-        case "c":
-            Send "^{F4}"  ; `caplock-c` 关闭当前文件 `ctrl-F4`
-        case "n":
-            Send "^n"  ; `caplock-n` 新建文件 `ctrl-n`
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
