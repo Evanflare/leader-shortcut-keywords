@@ -237,6 +237,12 @@ do_leader2_logic() {
             Send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
         case "dd":
             Send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
+        case "du":
+            Send "^+u"  ; `space-d-u`删除到行首 `ctrl-shift-u`
+        case "de":
+            Send "^+w"  ; `space-d-e`删除到行尾 `ctrl-shift-w`
+        case "cls":
+            Send "^+c"  ; `space-c-l-s`清空终端 `ctrl-shift-c`
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
