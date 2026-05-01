@@ -242,7 +242,7 @@ do_leader2_logic() {
         case "db":
             Send "^+u"  ; `space-d-b`删除到行首 `ctrl-shift-u`
         case "de":
-            Send "^+w"  ; `space-d-e`删除到行尾 `ctrl-shift-w`
+            Send "^+y"  ; `space-d-e`删除到行尾 `ctrl-shift-y`
         case "cls":
             Send "^+c"  ; `space-c-l-s`清空终端 `ctrl-shift-c`
         case "s":
