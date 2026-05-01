@@ -231,7 +231,12 @@ do_leader2_logic() {
             Send "^!n"  ; `space-n` 聚焦到非编辑控件 `ctrl-alt-n`
         case "k":
             Send "^+k"  ; `space-k` 跳出括号对 `ctrl-shift-k`
-
+        case "e":
+            Send "^+e"  ; `space-e` 光标行尾 end `ctrl-shift-e`
+        case "b":
+            Send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
+        case "dd":
+            Send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
