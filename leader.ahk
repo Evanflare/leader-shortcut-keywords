@@ -118,6 +118,9 @@ $z:: KeysHandler("z")
 ;  捕捉Alt键
 $LAlt:: ControlKeysHandler(THisHotkey)  ; 捕捉左Alt键，传入当前热键作为参数
 $RAlt:: ControlKeysHandler(THisHotkey)
+; 捕捉Shift键
+$LShift:: ControlKeysHandler(THisHotkey)  ; 捕捉左Shift键，传入当前热键作为参数
+$RShift:: ControlKeysHandler(THisHotkey)
 
 #HotIf  ; 结束条件热键的定义
 
@@ -247,6 +250,10 @@ do_leader2_logic() {
             Send "^+!c"  ; `space-c-l-s`清空终端 `ctrl-shift-alt-c`
         case "x":
             Send "^+x"  ; `space-x`删除当前字符 `ctrl-shift-x`
+        case "gg":
+            Send "^{Home}"  ; `space-g-g`跳转到文件开头 `ctrl-home`
+        case "LShiftg":
+            Send "^{End}"  ; `space-LShift-g`跳转到文件结尾 `ctrl-end`
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
@@ -257,10 +264,10 @@ do_leader2_logic() {
             Send "^v"  ; Ctrl+V 粘贴
         case "x":
             Send "^x"  ; Ctrl+X 剪切
-        case "ju":
-            Send "^+!u"  ; `space-j-u`焦点的上个和下个 `ctrl-shift-alt-u`
-        case "jx":
-            Send "^+!x"  ; `space-j-x`焦点的上个和下个 `ctrl-shift-alt-x`
+        case "gb":
+            Send "^+!u"  ; `space-g-b` 光标go back `ctrl-shift-alt-u`
+        case "gf":
+            Send "^+!x"  ; `space-g-f` 光标go forward `ctrl-shift-alt-x`
         case "zx":
             Send "+!x" ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
         case "zy":
