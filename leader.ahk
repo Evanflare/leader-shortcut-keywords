@@ -211,6 +211,7 @@ $CapsLock Up::
     ToolTip
 }
 
+; 引导键为Space时的逻辑处理函数
 do_leader2_logic() {
     global followingKeys, followingControlKeys, commandResult
     if commandResult == "" {
@@ -265,9 +266,9 @@ do_leader2_logic() {
         case "x":
             Send "^x"  ; Ctrl+X 剪切
         case "gb":
-            Send "^+!u"  ; `space-g-b` 光标go back `ctrl-shift-alt-u`
+            Send "^+!u"  ; `space-g-b` 跳转go back `ctrl-shift-alt-u`
         case "gf":
-            Send "^+!x"  ; `space-g-f` 光标go forward `ctrl-shift-alt-x`
+            Send "^+!x"  ; `space-g-f` 跳转go forward `ctrl-shift-alt-x`
         case "zx":
             Send "+!x" ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
         case "zy":
