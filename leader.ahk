@@ -250,7 +250,7 @@ do_leader2_logic() {
         case "cls":
             Send "^+!c"  ; `space-c-l-s`清空终端 `ctrl-shift-alt-c`
         case "x":
-            Send "^+x"  ; `space-x`删除当前字符 `ctrl-shift-x`
+            Send "{Delete}"  ; `space-x`删除当前字符 `delete`
         case "gg":
             Send "^{Home}"  ; `space-g-g`跳转到文件开头 `ctrl-home`
         case "LShiftg":
