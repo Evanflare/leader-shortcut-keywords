@@ -286,9 +286,9 @@ do_leader2_logic() {
         case "z4":
             Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
         case "LAltks":
-            Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
+            Send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
         case "RAltks":
-            Send "^!k"  ; `space-alt-k`打开快捷键页面 `ctrl-alt-k`
+            Send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
             ; 下面是视角切换的处理
         case "LAltl1":
             Send "^!1"  ; `space-alt-l-1`组视窗有 1列 `ctrl-alt-1`
@@ -312,6 +312,7 @@ do_leader2_logic() {
             Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
         case "LAltls":
             Send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
+
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
