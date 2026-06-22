@@ -2,7 +2,7 @@
 
 #Include ../leader.ahk
 
-; 全模式监听win键，在win按下后避免监听，避免影响原生win快捷键
+; 全局监听win键，在win按下后避免启用Leader捕获，避免影响原生 win 快捷键
 winKeyState := false
 ; 定时器在win键松开300ms之后重置winKeyState状态，避免误触发
 ~$LWin::
@@ -19,9 +19,27 @@ ResetWinKeyState() {
     global winKeyState
     winKeyState := false
 }
-; 只有在 win 键没有按下的时候才捕捉下面的键
+; 全局监听alt键，在alt按下后避免启用Leader捕获，避免影响原生 alt 快捷键
+altKeyState := false
+; 定时器在win键松开300ms之后重置winKeyState状态，避免误触发
+~$LAlt::
+{
+    global altKeyState
+    altKeyState := true
+
+}
+~$LAlt Up:: {
+    global altKeyState
+    ResetAltKeyState()
+}
+
+ResetAltKeyState() {
+    global altKeyState
+    altKeyState := false
+}
+; 只有在 win与alt 键没有按下的时候才捕捉下面的键
+#HotIf !winKeyState && !altKeyState
 ; Space按键的 按压事件捕捉
-#HotIf !winKeyState
 $Space::
 {
     ;激活Space模式
@@ -41,6 +59,7 @@ $CapsLock::
     followingKeys := "" ; 重置followingKeys字符串
     ToolTip "CapsLock: " ; 显示小框提示，初始状态只显示Leader键
 }
+#HotIf ; 结束条件热键的定义
 
 ; Space释放事件捕捉
 $Space Up::
@@ -75,7 +94,6 @@ $CapsLock Up::
     ; 关闭小框提示
     ToolTip
 }
-#HotIf ; 结束条件热键的定义
 
 ; 只有在Leader模式激活时才捕捉下面的键
 #HotIf CapsActive || SpaceActive
