@@ -51,6 +51,8 @@ space_hotkey_handler() {
     switch (shortcutKeywords) {
         case "f":
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
+        case "th":
+            Send "^h"
         case "fd":
             Send "^+f"  ; `space-f-d`搜索目录内容 `ctrl-shift-f`
         case "fh":
