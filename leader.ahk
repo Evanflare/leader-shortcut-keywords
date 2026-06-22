@@ -23,6 +23,14 @@ followingKeys := ""
 followingControlKeys := ""
 ; 定义一个命令含义填充标志，用于防止命令重复执行。空表示没有命令正在执行，非空表示有命令正在执行，值是快捷键的映射映射结果。
 commandResult := ""
-
+;  更新提示小窗：显示当前输入的键程
+input_keys_tip_dialog() {
+    if SpaceActive {
+        ToolTip "Space: " . followingControlKeys . followingKeys
+    }
+    else if CapsActive {
+        ToolTip "CapsLock: " . followingControlKeys . followingKeys
+    }
+}
 #Include libs\key_hook.ahk
 #Include libs\key_handler.ahk

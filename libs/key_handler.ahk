@@ -1,19 +1,13 @@
 #Requires AutoHotkey v2.0
 
 #Include ../leader.ahk
-; 通用键处理函数，检查Leader是否激活
+; 普通释放触发键的处理函数
 KeysHandler(key) {
     global CapsActive, SpaceActive
     ; Leader激活，调用处理函数
     LeaderTimeKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
-    if CapsActive {
-        ToolTip "Space: " . followingControlKeys . followingKeys
-    }
-    else if SpaceActive {
-        ToolTip "CapsLock: " . followingControlKeys . followingKeys
-    }
-
+    input_keys_tip_dialog()
 }
 ; 控制键的处理函数，检查Leader是否激活
 ControlKeysHandler(key) {
@@ -23,31 +17,21 @@ ControlKeysHandler(key) {
     ; Leader激活，调用处理函数
     LeaderTimeControlKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
-    if CapsActive {
-        ToolTip "Space: " . followingControlKeys . followingKeys
-    }
-    else if SpaceActive {
-        ToolTip "CapsLock: " . followingControlKeys . followingKeys
-    }
+    input_keys_tip_dialog()
 
 }
 
-; 处理Leader模式下捕捉到的键
+; 处理Leader模式下捕捉到的键与 follwingKeys 的关系
 LeaderTimeKeyDownHandler(key) {
     global followingKeys
-    ; 如果followingKeys字符串已经包含了这个键，说明是重复按键，不处理
-    ;    if InStr(followingKeys, key) {
-    ;        return
-    ;    } else {
-    ;        ; 将捕捉到的键追加在followingKeys字符串中
-    ;        followingKeys .= key
-    ;    }
-    ; 这里控制键我们不去重，因为有些组合快捷键是需要同时按下多个控制键的，比如 space-t-t-y，所以我们允许重复按下控制键，直接追加就行了
+    ; 这里控制键我们不去重，因为有些组合快捷键是需要同时按下多个控制键的，比如 space-t-t-y
+    ; 所以我们允许重复按下控制键，直接追加就行了
     followingKeys .= key
 }
+; 处理Leader模式下捕捉到的控制键与 followingControlKeys 的关系
 LeaderTimeControlKeyDownHandler(key) {
     global followingControlKeys
-    ; 如果followingControlKeys字符串已经包含了这个键，说明是重复按键，不处理
+    ; 如果followingControlKeys字符串已经包含了这个键，说明是重复按键，丢弃此次按键
     if InStr(followingControlKeys, key) {
         return
     } else {
@@ -57,7 +41,7 @@ LeaderTimeControlKeyDownHandler(key) {
 
 }
 
-; 定义一个引导键释放时触发的析构函数，用于重置状态和执行命令)
+; Leader键释放时触发的析构函数，用于重置状态和执行命令
 LeaderDestructor() {
     global SpaceActive, CapsActive, followingKeys, followingControlKeys, commandResult
     ; 重置状态
@@ -66,11 +50,11 @@ LeaderDestructor() {
     commandResult := "" ; 重置commandResult为空，表示没有命令正在执行了
     SpaceActive := false
     CapsActive := false
-    ;
+    ;重置提示窗
     ToolTip
 }
 
-; 引导键为Space时的逻辑处理函数
+; Space Leader释放时处理 hotkey 映射的函数
 space_hotkey_handler() {
     global followingKeys, followingControlKeys, commandResult
     if commandResult == "" {
@@ -216,7 +200,7 @@ space_hotkey_handler() {
     }
 }
 
-; CapsLock Leader快捷键的处理函数
+; CapsLock Leader释放时处理 hotkey 映射的函数
 caps_lock_hotkey_handler() {
     global followingKeys, followingControlKeys, commandResult
     if commandResult == "" {
