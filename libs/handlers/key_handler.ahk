@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 
-#Include ../leader.ahk
+#Include ../../leader.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
     global CapsActive, SpaceActive
@@ -41,26 +41,13 @@ LeaderTimeControlKeyDownHandler(key) {
 
 }
 
-; Leader键释放时触发的析构函数，用于重置状态和执行命令
-LeaderDestructor() {
-    global SpaceActive, CapsActive, followingKeys, followingControlKeys, ready_command_id
-    ; 重置状态
-    followingControlKeys := "" ; 重置followingControlKeys字符串
-    followingKeys := "" ; 重置followingKeys字符串
-    ready_command_id := "" ; 重置ready_command_id为空，表示没有命令正在执行了
-    SpaceActive := false
-    CapsActive := false
-    ;重置提示窗
-    ToolTip
-}
-
 ; Space Leader释放时处理 hotkey 映射的函数
 space_hotkey_handler() {
-    global followingKeys, followingControlKeys, ready_command_id
+    global followingKeys, followingControlKeys, handler_id
     ; 普通释放触发快捷键的逻辑
-    ; 如果有命令处于预备状态，而进入了普通快捷键逻辑说明命令预备状态应该取消
-    if ready_command_id != "" {
-        ready_command_id := ""
+    ; 如果有命令处于预备状态，而将输入交给默认处理的话，说明用户输入的命令并非准备的命令。
+    if handler_id != "" {
+        handler_id := ""
     }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {
@@ -202,11 +189,11 @@ space_hotkey_handler() {
 
 ; CapsLock Leader释放时处理 hotkey 映射的函数
 caps_lock_hotkey_handler() {
-    global followingKeys, followingControlKeys, ready_command_id
+    global followingKeys, followingControlKeys, handler_id
     ; 普通释放触发快捷键的逻辑
-    ; 如果有命令处于预备状态，而进入了普通快捷键逻辑说明命令预备状态应该取消
-    if ready_command_id != "" {
-        ready_command_id := ""
+    ; 如果有命令处于预备状态，而将输入交给默认处理的话，说明用户输入的命令并非准备的命令。
+    if handler_id != "" {
+        handler_id := ""
     }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {

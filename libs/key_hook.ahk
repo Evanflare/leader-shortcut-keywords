@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include ../leader.ahk
-
+#Include key_handler_dispatcher.ahk
 ; 全局监听win键，在win按下后避免启用Leader捕获，避免影响原生 win 快捷键
 winKeyState := false
 ; 定时器在win键松开300ms之后重置winKeyState状态，避免误触发
@@ -95,6 +95,36 @@ $CapsLock Up::
     ToolTip
 }
 
+; Leader键释放时触发的析构函数，用于重置状态和执行命令
+LeaderDestructor() {
+    global SpaceActive, CapsActive, followingKeys, followingControlKeys, handler_id, handler_mode,
+        exit_wait_input_should
+    ; 需要特殊判断是否为命令停留模式
+    if handler_mode == "wait_input" {
+        if exit_wait_input_should {
+            ; 重置状态
+            followingControlKeys := "" ; 重置followingControlKeys字符串
+            followingKeys := "" ; 重置followingKeys字符串
+            handler_id := "" ; 重置handler_id为空
+            SpaceActive := false
+            CapsActive := false
+            handler_mode := "default"
+            exit_wait_input_should := false
+        }
+        ; 这次不退出，下次再退出
+        exit_wait_input_should := true
+    } else {
+        handler_mode := "default"
+        ; 重置状态
+        followingControlKeys := "" ; 重置followingControlKeys字符串
+        followingKeys := "" ; 重置followingKeys字符串
+        handler_id := "" ; 重置handler_id为空
+        SpaceActive := false
+        CapsActive := false
+    }
+    ;重置提示窗
+    ToolTip
+}
 ; 只有在Leader模式激活时才捕捉下面的键
 #HotIf CapsActive || SpaceActive
 ; Leader模式下对键盘的0-9键,a-z键的捕捉
@@ -117,11 +147,11 @@ $d:: KeysHandler("d")
 $e:: KeysHandler("e")
 $f:: KeysHandler("f")
 $g:: KeysHandler("g")
-$h:: leaderMoveKeyHandler("h")  ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$h:: dispatcher("h")  ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
 $i:: KeysHandler("i")
-$j:: leaderMoveKeyHandler("j")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
-$k:: leaderMoveKeyHandler("k")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
-$l:: leaderMoveKeyHandler("l")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$j:: dispatcher("j")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$k:: dispatcher("k")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$l:: dispatcher("l")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
 $m:: KeysHandler("m")
 $n:: KeysHandler("n")
 $o:: KeysHandler("o")
