@@ -25,4 +25,4 @@ followingControlKeys := ""
 commandResult := ""
 
 #Include libs\key_hook.ahk
-#Include libs\ke_handler.ahk
+#Include libs\key_handler.ahk
