@@ -243,6 +243,8 @@ caps_lock_hotkey_handler() {
             WinRestore(hwnd)
             WinShow(hwnd)
             ; 下面是 Space+Alt 组合键的处理
+        case "q":
+            Send "!{F4}"
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
