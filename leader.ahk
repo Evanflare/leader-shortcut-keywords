@@ -10,7 +10,7 @@
 ;5.在Leader模式下，按下的其他键会在小框中提示当前的Leader键和输入的其他键。
 
 #Include libs\hjkl_move.ahk ; 包含hjkl_move.ahk文件，提供基于hjkl键的移动功能
-
+#Include libs\jump_line_number.ahk
 ;定义Leader键和Leader键的触发状态
 Leader1 := "CapsLock"
 Leader2 := "Space"
@@ -326,6 +326,13 @@ do_leader2_logic() {
 
         default:
             switch {
+                case RegExMatch(shortcutKeywords, "^(\d+)$", &priceMatch): ; 匹配纯数字格式
+                    ; 提取匹配到的数字转换
+                    times := Integer(priceMatch[1])
+                    if times < 1 {
+                        times := 1
+                    }
+                    JumpToLine(times)
                 default:
                     ; 不匹配，小小提示音
                     SoundPlay("*-1")
