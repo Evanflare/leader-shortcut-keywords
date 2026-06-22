@@ -117,11 +117,11 @@ $d:: KeysHandler("d")
 $e:: KeysHandler("e")
 $f:: KeysHandler("f")
 $g:: KeysHandler("g")
-$h:: leaderMoveKeyHandler("h", followingKeys)  ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$h:: leaderMoveKeyHandler("h")  ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
 $i:: KeysHandler("i")
-$j:: leaderMoveKeyHandler("j", followingKeys)   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
-$k:: leaderMoveKeyHandler("k", followingKeys)   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
-$l:: leaderMoveKeyHandler("l", followingKeys)   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$j:: leaderMoveKeyHandler("j")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$k:: leaderMoveKeyHandler("k")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
+$l:: leaderMoveKeyHandler("l")   ; hjkl键的特殊处理，调用leaderMoveKeyHandler函数
 $m:: KeysHandler("m")
 $n:: KeysHandler("n")
 $o:: KeysHandler("o")

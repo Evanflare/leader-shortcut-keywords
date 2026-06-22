@@ -43,11 +43,11 @@ LeaderTimeControlKeyDownHandler(key) {
 
 ; Leader键释放时触发的析构函数，用于重置状态和执行命令
 LeaderDestructor() {
-    global SpaceActive, CapsActive, followingKeys, followingControlKeys, commandResult
+    global SpaceActive, CapsActive, followingKeys, followingControlKeys, ready_command_id
     ; 重置状态
     followingControlKeys := "" ; 重置followingControlKeys字符串
     followingKeys := "" ; 重置followingKeys字符串
-    commandResult := "" ; 重置commandResult为空，表示没有命令正在执行了
+    ready_command_id := "" ; 重置ready_command_id为空，表示没有命令正在执行了
     SpaceActive := false
     CapsActive := false
     ;重置提示窗
@@ -56,11 +56,11 @@ LeaderDestructor() {
 
 ; Space Leader释放时处理 hotkey 映射的函数
 space_hotkey_handler() {
-    global followingKeys, followingControlKeys, commandResult
-    if commandResult == "" {
-        commandResult := "leader2"
-    } else if commandResult != "leader2" {
-        return ;如果有命令正在执行，说明不是leader2的命令，直接返回
+    global followingKeys, followingControlKeys, ready_command_id
+    ; 普通释放触发快捷键的逻辑
+    ; 如果有命令处于预备状态，而进入了普通快捷键逻辑说明命令预备状态应该取消
+    if ready_command_id != "" {
+        ready_command_id := ""
     }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {
@@ -202,11 +202,11 @@ space_hotkey_handler() {
 
 ; CapsLock Leader释放时处理 hotkey 映射的函数
 caps_lock_hotkey_handler() {
-    global followingKeys, followingControlKeys, commandResult
-    if commandResult == "" {
-        commandResult := "leader1"
-    } else if commandResult != "leader1" {
-        return ;如果有命令正在执行，说明不是leader1的命令，直接返回
+    global followingKeys, followingControlKeys, ready_command_id
+    ; 普通释放触发快捷键的逻辑
+    ; 如果有命令处于预备状态，而进入了普通快捷键逻辑说明命令预备状态应该取消
+    if ready_command_id != "" {
+        ready_command_id := ""
     }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {
