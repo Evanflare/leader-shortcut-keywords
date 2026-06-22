@@ -312,6 +312,10 @@ do_leader2_logic() {
             Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
         case "LAltls":
             Send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
+        case "cn":
+            Send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-0`
+        case "en":
+            Send "^+0" ; `space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-0`
 
         default:
             ; 不匹配，小小提示音
