@@ -1,3 +1,4 @@
 
 # ignore .ignore file itself
 .ignore*
+.vscode/**
