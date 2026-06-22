@@ -313,9 +313,9 @@ do_leader2_logic() {
         case "LAltls":
             Send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
         case "cn":
-            Send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-0`
+            Send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
         case "en":
-            Send "^+0" ; `space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-0`
+            Send "^+8" ; `space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
         case "o":
             Send "{End}"
             Send "{Enter}"
