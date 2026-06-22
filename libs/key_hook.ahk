@@ -47,6 +47,9 @@ $Space::
     CapsActive := false
     SpaceActive := true
     followingKeys := "" ; 重置followingKeys字符串
+    if handler_mode == "wait_input" {
+        global exit_wait_input_should := true
+    }
     ToolTip "Space: " ; 显示小框提示，初始状态只显示Leader键
 }
 ; CapsLock按键的 按压事件捕捉
@@ -69,7 +72,7 @@ $Space Up::
         space_hotkey_handler
     }
     else {
-        if !winKeyState {  ; 如果Win键没有被按下，发送Space键
+        if !winKeyState && followingControlKeys == "" && handler_mode == "default" {  ; 如果Win键没有被按下，发送Space键
             Send "{Space}"
         }
     }
@@ -168,10 +171,10 @@ $y:: KeysHandler("y")
 $z:: KeysHandler("z")
 
 ;  捕捉Alt键
-$LAlt:: ControlKeysHandler(THisHotkey)  ; 捕捉Alt键，传入当前热键作为参数
-$RAlt:: ControlKeysHandler(THisHotkey)
+$LAlt:: ControlKeysHandler("Alt")  ; 捕捉Alt键，传入当前热键作为参数
+$RAlt:: ControlKeysHandler("Alt")
 ; 捕捉Shift键
-$LShift:: ControlKeysHandler(THisHotkey)  ; 捕捉Shift键，传入当前热键作为参数
-$RShift:: ControlKeysHandler(THisHotkey)
+$LShift:: ControlKeysHandler("Shift")  ; 捕捉Shift键，传入当前热键作为参数
+$RShift:: ControlKeysHandler("Shift")
 
 #HotIf  ; 结束条件热键的定义

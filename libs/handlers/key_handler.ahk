@@ -3,19 +3,17 @@
 #Include ../../leader.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
-    global CapsActive, SpaceActive
     ; Leader激活，调用处理函数
     LeaderTimeKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
     input_keys_tip_dialog()
 }
 ; 控制键的处理函数，检查Leader是否激活
-ControlKeysHandler(key) {
-    global CapsActive, SpaceActive
-    ; 这里的key是类似于ThisHotkey的字符串，比如"$LAlt"，我们需要把前面的"$"去掉，得到"LAlt"
-    key := SubStr(key, 2) ; 去掉前面的"$"
+ControlKeysHandler(keyName) {
+    ; 这里的key是类似于ThisHotkey的字符串，比如"$Alt"，我们需要把前面的"$"去掉，得到"Alt"
+    ;keyName := SubStr(keyName, 2) ; 去掉前面的"$"
     ; Leader激活，调用处理函数
-    LeaderTimeControlKeyDownHandler(key)
+    LeaderTimeControlKeyDownHandler(keyName)
     ; 小框提示当前Leader键和followingKeys
     input_keys_tip_dialog()
 
@@ -45,9 +43,9 @@ LeaderTimeControlKeyDownHandler(key) {
 space_hotkey_handler() {
     global followingKeys, followingControlKeys, handler_id
     ; 普通释放触发快捷键的逻辑
-    ; 如果有命令处于预备状态，而将输入交给默认处理的话，说明用户输入的命令并非准备的命令。
+    ; 如果有其他处理函数，那么不要再处理
     if handler_id != "" {
-        handler_id := ""
+        return
     }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {
@@ -115,32 +113,32 @@ space_hotkey_handler() {
             Send "^+!3"  ; `space-z-3`焦点在组3 `ctrl-shift-alt-3`
         case "z4":
             Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
-        case "LAltks":
+        case "Altks":
             Send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
         case "RAltks":
             Send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
             ; 下面是视角切换的处理
-        case "LAltl1":
+        case "Altl1":
             Send "^!1"  ; `space-alt-l-1`组视窗有 1列 `ctrl-alt-1`
-        case "LAltl2":
+        case "Altl2":
             Send "^!2"  ;   `space-alt-l-2`组视窗有 2列 `ctrl-alt-2`
-        case "LAlth2":
+        case "Alth2":
             Send "+!2"  ; `space-alt-h-2`组视窗有 2行 `shift-alt-2`
-        case "LAlth1":
+        case "Alth1":
             Send "^!1"  ; `space-alt-h-1`组视窗有 1行 `ctrl-alt-1`
-        case "LAltwg":
+        case "Altwg":
             Send "^!g"  ; `space-alt-w-g`组视窗呈网格 4窗 `ctrl-alt-g`
-        case "LAltux":
+        case "Altux":
             Send "^!x"  ; `space-alt-u-x`组视窗向下生，并复制当前的文件编辑视图 `ctrl-alt-x`
-        case "LAltuy":
+        case "Altuy":
             Send "^!y"  ; `space-alt-u-y`组视窗向右生，并复制当前的文件编辑视图 `ctrl-alt-y`
-        case "LAltuz":
+        case "Altuz":
             Send "^!z"  ; `space-alt-u-z` `ctrl-alt-z`
-        case "LAltu":
+        case "Altu":
             Send "^!u"  ; `space-alt-u` `ctrl-alt-u`
-        case "LAltuj":
+        case "Altuj":
             Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
-        case "LAltls":
+        case "Altls":
             Send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
         case "cn":
             Send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
