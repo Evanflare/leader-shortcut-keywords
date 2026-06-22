@@ -21,8 +21,8 @@ LeaderTimeout := 500 ; Leader模式的超时时间，单位为毫秒
 followingKeys := ""
 ; 存储Leader时间内的控制键输入，比如Alt键
 followingControlKeys := ""
-; 定义一个命令含义填充标志，用于防止命令重复执行。空表示没有命令正在执行，非空表示有命令正在执行，值是快捷键的映射映射结果。
-commandResult := ""
+; 命令预备状态，当某命令触发预备的时候，键输入会交给预备命令的处理函数处理
+ready_command_id := ""
 ;  更新提示小窗：显示当前输入的键程
 input_keys_tip_dialog() {
     if SpaceActive {

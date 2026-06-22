@@ -4,18 +4,25 @@
 
 #Include ..\leader.ahk
 
-; 判断：如果followingKeys 中的字符等同当前按下的key，则说明是单纯的hjkl移动，否则说明是其他功能，直接调用KeysHandler处理
-leaderMoveKeyHandler(key, followingKeys) {
-
-    if followingKeys != key {
-        KeysHandler(key) ;如果有其他键被按下，说明不是单纯的hjkl移动，直接返回
-    } else {
-        global commandResult
-        if commandResult == "" {
-            commandResult := "leftdownupright"
-        } else if commandResult != "leftdownupright" {
-            return ;如果有命令正在执行，说明不是单纯的hjkl移动，直接返回
+; 当命令状态为空的时候，输入hjkl键进入hjkl命令状态
+; 如果命令状态为hjkl，那么此时输入hjkl任意键直接移动
+leaderMoveKeyHandler(key) {
+    global ready_command_id
+    ; 检测当前是否有命令预备, 没有则当前命令进入预备
+    if ready_command_id == "" {
+        global followingKeys
+        if followingKeys != key {
+            ; 只允许空键程,进入hjkl命令预备
+            ; 否则认为是普通输入
+            KeysHandler(key)
+        } else {
+            ; 进入hjkl命令预备
+            ready_command_id := "hjkl"
         }
+    } else if ready_command_id == "hjkl" {
+        ;现在正处于命令预备状态，可以认识是当前命令的键入
+        global followingKeys
+        followingKeys := key
         switch key {
             case "h":
                 Send "{Left}"
@@ -26,7 +33,18 @@ leaderMoveKeyHandler(key, followingKeys) {
             case "l":
                 Send "{Right}"
             default:
-                commandResult := "" ;如果按下的不是hjkl键，重置commandResult为空，表示没有命令正在执行了
+                ;此处不可能到达
+                MsgBox("不可能到达此处逻辑，请检查错误。")
+                ; ;如果按下的不是hjkl键，退出命令预备状态
+                ; ready_command_id := ""
+                ; KeysHandler(key)
         }
+        ; 小框提示当前Leader键和followingKeys
+        input_keys_tip_dialog()
+
+    } else {
+        ; 说明当前有别的命令处于预备状态，将键入交给对应的处理函数
+        ; hanlderMap(ready_command_id).run()
     }
+
 }
