@@ -333,6 +333,22 @@ do_leader2_logic() {
                         times := 1
                     }
                     JumpToLine(times)
+                case RegExMatch(shortcutKeywords, "^(\d+)j$", &priceMatch): ; 匹配纯数字格式j结尾
+                    ; 提取匹配到的数字转换
+                    times := Integer(priceMatch[1])
+                    if times < 1 {
+                        times := 1
+                    }
+                    Send "{Down " . times . "}"
+                    Send "{End}"
+                case RegExMatch(shortcutKeywords, "^(\d+)k$", &priceMatch): ; 匹配纯数字格式k结尾
+                    ; 提取匹配到的数字转换
+                    times := Integer(priceMatch[1])
+                    if times < 1 {
+                        times := 1
+                    }
+                    Send "{Up " . times . "}"
+                    Send "{End}"
                 default:
                     ; 不匹配，小小提示音
                     SoundPlay("*-1")
