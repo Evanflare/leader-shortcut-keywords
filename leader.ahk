@@ -316,10 +316,21 @@ do_leader2_logic() {
             Send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-0`
         case "en":
             Send "^+0" ; `space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-0`
+        case "o":
+            Send "{End}"
+            Send "{Enter}"
+        case "LShifto":
+            Send "{Up}"
+            Send "{End}"
+            Send "{Enter}"
 
         default:
-            ; 不匹配，小小提示音
-            SoundPlay("*-1")
+            switch {
+                default:
+                    ; 不匹配，小小提示音
+                    SoundPlay("*-1")
+            }
+
     }
 }
 
