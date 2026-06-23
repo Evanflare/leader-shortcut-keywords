@@ -83,8 +83,8 @@ space_hotkey_handler() {
             Send "{Delete}"  ; `space-x`删除当前字符 `delete`
         case "gg":
             Send "^{Home}"  ; `space-g-g`跳转到文件开头 `ctrl-home`
-        case "LShiftg":
-            Send "^{End}"  ; `space-LShift-g`跳转到文件结尾 `ctrl-end`
+        case "Shiftg":
+            Send "^{End}"  ; `space-Shift-g`跳转到文件结尾 `ctrl-end`
         case "s":
             Send "^s"  ; Ctrl+S 保存
         case "a":
@@ -151,7 +151,7 @@ space_hotkey_handler() {
         case "o":
             Send "{End}"
             Send "{Enter}"
-        case "LShifto":
+        case "Shifto":
             Send "{Up}"
             Send "{End}"
             Send "{Enter}"
