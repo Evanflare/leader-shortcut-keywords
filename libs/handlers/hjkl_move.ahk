@@ -7,11 +7,15 @@
 
 ; 子命令模式：hjkl 移动模式
 ; 如果handler_id不为空，并且还调用了这个handler那么默认由自己处理(由dispatch确定调用哪一个handler函数)
-; 进行前缀匹配 匹配 hh jj kk ll
+; 进行前缀匹配 匹配 space leader 下的 hh jj kk ll
 leaderMoveKeyHandler(keyName) {
     ; 当处理函数的id为空的时候，进行前缀匹配
     global handler_id
     if handler_id == "" {
+        ; 如果不是space leader 则直接不处理
+        if !SpaceActive {
+            return
+        }
         global followingKeys, followingControlKeys
         current_input_keys := followingControlKeys . followingKeys . keyName
         ; 进行前缀匹配 匹配 hh jj kk ll
