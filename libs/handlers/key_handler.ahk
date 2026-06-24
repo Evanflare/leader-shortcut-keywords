@@ -10,7 +10,7 @@ KeysHandler(key) {
 }
 ; 控制键的处理函数，检查Leader是否激活
 ControlKeysHandler(keyName) {
-    ; 这里的key是类似于ThisHotkey的字符串，比如"$Alt"，我们需要把前面的"$"去掉，得到"Alt"
+    ; 这里的key是类似于ThisHotkey的字符串，比如"$ "，我们需要把前面的"$"去掉，得到"Alt"
     ;keyName := SubStr(keyName, 2) ; 去掉前面的"$"
     ; Leader激活，调用处理函数
     LeaderTimeControlKeyDownHandler(keyName)
@@ -155,7 +155,8 @@ space_hotkey_handler() {
             Send "{Up}"
             Send "{End}"
             Send "{Enter}"
-
+        case "cc":
+            Send "^!y"
         default:
             switch {
                 case RegExMatch(shortcutKeywords, "^(\d+)$", &priceMatch): ; 匹配纯数字格式
@@ -247,6 +248,10 @@ caps_lock_hotkey_handler() {
             ; 下面是 Space+Alt 组合键的处理
         case "q":
             Send "!{F4}"
+        case "h": ; `cpaslock-h` 浏览器标签页历史向前，`capslock-l` 浏览器标签页历史向后 `alt-左``alt-右`
+            Send "!{Left}"
+        case "l":
+            Send "!{Right}"
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
