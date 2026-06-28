@@ -252,6 +252,8 @@ caps_lock_hotkey_handler() {
             Send "!{Left}"
         case "l":
             Send "!{Right}"
+        case "zj":
+            Send "^!{F11}" ; 查看最近打开的文件列表
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
