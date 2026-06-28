@@ -66,10 +66,10 @@ space_hotkey_handler() {
         case "k":
             Send "^+k"  ; `space-k` 跳出括号对 `ctrl-shift-k`
         case "e":
-            Send "^+e"  ; `space-e` 光标行尾 end `ctrl-shift-e`
+            ;Send "^+e"  ; `space-e` 光标行尾 end `ctrl-shift-e`
             Send "{End}" ; 这里是为了兼容一些不支持`ctrl-shift-e`的应用，比如Windows Terminal，直接发送End键就可以了
         case "b":
-            Send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
+            ;Send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
             Send "{Home}" ; 这里是为了兼容一些不支持`ctrl-shift-b`的应用，比如Windows Terminal，直接发送Home键就可以了
         case "dd":
             Send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
