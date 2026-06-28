@@ -166,22 +166,23 @@ space_hotkey_handler() {
                         times := 1
                     }
                     JumpToLine(times)
-                case RegExMatch(shortcutKeywords, "^(\d+)j$", &priceMatch): ; 匹配纯数字格式j结尾
+                case RegExMatch(shortcutKeywords, "^(\d+)([hjkl])$", &priceMatch): ; 匹配纯数字格式hjkl结尾
                     ; 提取匹配到的数字转换
                     times := Integer(priceMatch[1])
                     if times < 1 {
                         times := 1
                     }
-                    Send "{Down " . times . "}"
-                    Send "{End}"
-                case RegExMatch(shortcutKeywords, "^(\d+)k$", &priceMatch): ; 匹配纯数字格式k结尾
-                    ; 提取匹配到的数字转换
-                    times := Integer(priceMatch[1])
-                    if times < 1 {
-                        times := 1
+                    switch priceMatch[2] {
+                        case "h":
+                            Send "{Left " . times . "}"
+                        case "j":
+                            Send "{Down " . times . "}"
+                        case "k":
+                            Send "{Up " . times . "}"
+                        case "l":
+                            Send "{Right " . times . "}"
                     }
-                    Send "{Up " . times . "}"
-                    Send "{End}"
+
                 default:
                     ; 不匹配，小小提示音
                     SoundPlay("*-1")
