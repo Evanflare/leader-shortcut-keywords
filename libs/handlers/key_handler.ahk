@@ -149,12 +149,11 @@ space_hotkey_handler() {
         case "en":
             Send "^+8" ; `space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
         case "o":
-            Send "{End}"
-            Send "{Enter}"
+            Send "{End}{Enter}"
         case "Shifto":
             Send "{Up}"
-            Send "{End}"
-            Send "{Enter}"
+            Sleep 100
+            Send "{End}{Enter}"
         case "cc":
             Send "^!{F12}"
         default:
