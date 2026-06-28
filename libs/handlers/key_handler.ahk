@@ -156,7 +156,7 @@ space_hotkey_handler() {
             Send "{End}"
             Send "{Enter}"
         case "cc":
-            Send "^!y"
+            Send "^!{F12}"
         default:
             switch {
                 case RegExMatch(shortcutKeywords, "^(\d+)$", &priceMatch): ; 匹配纯数字格式
