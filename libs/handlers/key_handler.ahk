@@ -79,9 +79,15 @@ space_hotkey_handler() {
             Sleep 50
             Send "{Delete}"
         case "db":
-            Send "^+u"  ; `space-d-b`删除到行首 `ctrl-shift-u`
+            ; `space-d-b`删除到行首
+            Send "+{Home}"
+            Sleep 50
+            Send "{Delete}"
         case "de":
-            Send "^+y"  ; `space-d-e`删除到行尾 `ctrl-shift-y`
+            ; `space-d-e`删除到行尾
+            Send "+{End}"
+            Sleep 50
+            Send "{Delete}"
         case "cls":
             Send "^+!c"  ; `space-c-l-s`清空终端 `ctrl-shift-alt-c`
         case "x":
