@@ -105,15 +105,15 @@ space_up_handler() {
         case "v":
             Send "^v"  ; Ctrl+V 粘贴
         case "vv":
-            Send "^!v" ; 打开ditto剪切板界面
+            Send "^!v" ; 打开 copyq 剪切板界面
         case "ca":
-            Send "^+c" ; 复制到ditto复制缓冲区 A 号
+            Send "^+c" ; 复制到copyq复制缓冲区 A 号
         case "cb":
-            Send "^+g" ; 复制到ditto复制缓冲区 B 号
+            Send "^+g" ; 复制到copyq复制缓冲区 B 号
         case "cc":
-            Send "^+h" ; 复制到ditto复制缓冲区 C 号
+            Send "^+h" ; 复制到copyq复制缓冲区 C 号
         case "cd":
-            Send "^!+i" ; 复制到ditto复制缓冲区 D 号
+            Send "^!+i" ; 复制到copyq复制缓冲区 D 号
         case "x":
             Send "^x"  ; Ctrl+X 剪切
         case "gb":
@@ -244,6 +244,9 @@ caps_lock_up_handler() {
                     case "trans":
                         ; 打开translate界面
                         Send "^!t"
+                    case "copyq":
+                        ; 打开 copyq 界面
+                        Send "^!v" ; 打开 copyq 界面
                     default:
                         ; 不匹配，小小提示音
                         SoundPlay("*-1")
