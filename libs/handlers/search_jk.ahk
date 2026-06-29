@@ -28,12 +28,12 @@ search_jk(keyName) {
             ; 清空之前的输入
             ; `space-d-b`删除到行首
             Send "^{a}"
-            Sleep 50
             Send "{Delete}"
-            Sleep 50
-            Send search_key_words_memory
+            Sleep 10
+            SendText search_key_words_memory
+            Sleep 10
             Send "{Escape}"
-            Sleep 50
+            Sleep 10
             Send "{Escape}"
         case "k":
             ; vscode经常出现按ctrl-f就将往当前光标所在字符串作为新的搜索关键词，我们需要还原之前的搜索关键词
@@ -41,16 +41,16 @@ search_jk(keyName) {
             ; 清空之前的输入
             ; `space-d-b`删除到行首
             Send "^{a}"
-            Sleep 50
             Send "{Delete}"
-            Sleep 50
-            Send search_key_words_memory
+            Sleep 10
+            SendText search_key_words_memory
+            Sleep 10
             ; 然后连续向上2次
             Send "{Shift down}"
             Send "{Enter 2}"
             Send "{Shift up}"
             Send "{Escape}"
-            Sleep 50
+            Sleep 10
             Send "{Escape}"
     }
     ; 小框提示当前Leader键和followingKeys

@@ -59,10 +59,14 @@ space_up_handler() {
             Send "^+a" ; `space-f-h`搜索文件路径 `ctrl-shift-a`
         case "ff": ; 查找下一个空格
             ;存储一下搜索记忆
-            global search_key_words_memory := " "
+            global search_key_words_memory := "(?<=[^ ])( )(?=[^ ])"
             Send "^f"
-            Sleep 100
-            Send " "
+            ; 清空搜索框
+            Sleep 10
+            Send "^a"
+            Send "{Delete}"
+            SendText "(?<=[^ ])( )(?=[^ ])"
+            Sleep 10
             Send "{Escape 2}"
         case "l":
             Send "^l"  ; `space-l` 聚焦到地址栏 `ctrl-l`
