@@ -104,6 +104,16 @@ space_hotkey_handler() {
             Send "^c"  ; Ctrl+C 复制
         case "v":
             Send "^v"  ; Ctrl+V 粘贴
+        case "vv":
+            Send "^!v" ; 打开ditto剪切板界面
+        case "ca":
+            Send "^+c" ; 复制到ditto复制缓冲区 A 号
+        case "cb":
+            Send "^+g" ; 复制到ditto复制缓冲区 B 号
+        case "cc":
+            Send "^+h" ; 复制到ditto复制缓冲区 C 号
+        case "cd":
+            Send "^!+i" ; 复制到ditto复制缓冲区 D 号
         case "x":
             Send "^x"  ; Ctrl+X 剪切
         case "gb":
@@ -165,8 +175,6 @@ space_hotkey_handler() {
             Send "{Up}"
             Sleep 100
             Send "{End}{Enter}"
-        case "cc":
-            Send "^!{F12}"
         default:
             switch {
                 case RegExMatch(shortcutKeywords, "^(\d+)$", &priceMatch): ; 匹配纯数字格式
