@@ -51,12 +51,19 @@ space_up_handler() {
     switch (shortcutKeywords) {
         case "f":
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
-        case "th":
+        case "th": ; 替换内容
             Send "^h"
         case "fd":
             Send "^+f"  ; `space-f-d`搜索目录内容 `ctrl-shift-f`
         case "fh":
             Send "^+a" ; `space-f-h`搜索文件路径 `ctrl-shift-a`
+        case "ff": ; 查找下一个空格
+            ;存储一下搜索记忆
+            global search_key_words_memory := " "
+            Send "^f"
+            Sleep 100
+            Send " "
+            Send "{Escape 2}"
         case "l":
             Send "^l"  ; `space-l` 聚焦到地址栏 `ctrl-l`
         case "m":
@@ -173,24 +180,24 @@ space_up_handler() {
             Send "{End}{Enter}"
         case "Shifto":
             Send "{Up}"
-            Sleep 100
+            Sleep 50
             Send "{End}{Enter}"
         default:
             switch {
-                case RegExMatch(shortcutKeywords, "^(\d+)$", &priceMatch): ; 匹配纯数字格式
+                case RegExMatch(shortcutKeywords, "^(\d+)$", &groupMatch): ; 匹配纯数字格式
                     ; 提取匹配到的数字转换
-                    times := Integer(priceMatch[1])
+                    times := Integer(groupMatch[1])
                     if times < 1 {
                         times := 1
                     }
                     JumpToLine(times)
-                case RegExMatch(shortcutKeywords, "^(\d+)([hjkl])$", &priceMatch): ; 匹配纯数字格式hjkl结尾
+                case RegExMatch(shortcutKeywords, "^(\d+)([hjkl])$", &groupMatch): ; 匹配纯数字格式hjkl结尾
                     ; 提取匹配到的数字转换
-                    times := Integer(priceMatch[1])
+                    times := Integer(groupMatch[1])
                     if times < 1 {
                         times := 1
                     }
-                    switch priceMatch[2] {
+                    switch groupMatch[2] {
                         case "h":
                             Send "{Left " . times . "}"
                         case "j":
@@ -201,6 +208,20 @@ space_up_handler() {
                             Send "{Right " . times . "}"
                     }
 
+                case RegExMatch(shortcutKeywords, "^ff(.+)$", &groupMatch): ; 匹配 space-f-f-<words>
+                    ; 先存储记忆,因为vscode经常出现ctrl-f直接将当前光标所在字符串作为新的搜索关键词覆盖之前的关键词，所以我们需要自行存储搜索历史
+                    global search_key_words_memory := groupMatch[1]
+                    Send "^f"
+                    ; 清空之前的输入
+                    ; `space-d-b`删除到行首
+                    Send "^{a}"
+                    Sleep 50
+                    Send "{Delete}"
+                    Sleep 50
+                    Send groupMatch[1]
+                    Send "{Escape}"
+                    Sleep 50
+                    Send "{Escape}"
                 default:
                     ; 不匹配，小小提示音
                     SoundPlay("*-1")

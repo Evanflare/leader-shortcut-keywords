@@ -40,5 +40,7 @@ input_keys_tip_dialog() {
         ToolTip "CapsLock: " . followingControlKeys . followingKeys
     }
 }
+; 搜索记忆
+search_key_words_memory := " "
 #Include libs\key_hook.ahk
 #Include libs\handlers\key_handler.ahk
