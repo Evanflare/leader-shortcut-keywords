@@ -40,7 +40,7 @@ LeaderTimeControlKeyDownHandler(key) {
 }
 
 ; Space Leader释放时处理 hotkey 映射的函数
-space_hotkey_handler() {
+space_up_handler() {
     global followingKeys, followingControlKeys, handler_id
     ; 普通释放触发快捷键的逻辑
     ; 如果有其他处理函数，那么不要再处理
@@ -210,14 +210,52 @@ space_hotkey_handler() {
 }
 
 ; CapsLock Leader释放时处理 hotkey 映射的函数
-caps_lock_hotkey_handler() {
+caps_lock_up_handler() {
     global followingKeys, followingControlKeys, handler_id
     ; 普通释放触发快捷键的逻辑
-    ; 如果有命令处于预备状态，而将输入交给默认处理的话，说明用户输入的命令并非准备的命令。
+    ; 如果有其他处理函数，那么不要再处理
     if handler_id != "" {
-        handler_id := ""
+        return
     }
     shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    ; 先进行前缀匹配 wait_input 模式
+    switch shortcutKeywords {
+        case "":
+            ; 开启wait_input模式
+            global handler_mode := "wait_input"
+        default:
+            ; 如果已经是wait_input 模式那么进行匹配
+            if handler_mode == "wait_input" {
+                switch shortcutKeywords {
+                    case "wt":
+                        Run "wt.exe --window new", , , &pid
+
+                        ; 2. 等待窗口出现（官方必用步骤）
+                        hwnd := WinWait("ahk_pid " pid, , 2)
+                        if (!hwnd)
+                            return
+
+                        ; 3. 官方激活（内部已含重试与 Alt 解锁）
+                        WinActivate(hwnd)
+
+                        ; 4. 确保窗口可见（防止被最小化/隐藏）
+                        WinRestore(hwnd)
+                        WinShow(hwnd)
+                    case "trans":
+                        ; 打开translate界面
+                        Send "^!t"
+                    default:
+                        ; 不匹配，小小提示音
+                        SoundPlay("*-1")
+                }
+            } else {
+                ; 没有匹配项再进行普通释放快捷键匹配
+                capslock_release_hot_key(shortcutKeywords)
+            }
+    }
+}
+
+capslock_release_hot_key(shortcutKeywords) {
     switch (shortcutKeywords) {
         case "o":
             Send "^o"  ; `caplock-o`打开文件`ctrl-o`

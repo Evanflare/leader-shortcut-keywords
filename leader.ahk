@@ -30,6 +30,7 @@ followingControlKeys := ""
 handler_id := ""
 ; 当前处理函数的模式
 handler_mode := "default"
+exit_wait_input_should := false
 ;  更新提示小窗：显示当前输入的键程
 input_keys_tip_dialog() {
     if SpaceActive {
