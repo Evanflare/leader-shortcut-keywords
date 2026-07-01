@@ -42,5 +42,7 @@ input_keys_tip_dialog() {
 }
 ; 搜索记忆
 search_key_words_memory := " "
+
+#Include libs\script_control.ahk
 #Include libs\key_hook.ahk
 #Include libs\handlers\key_handler.ahk

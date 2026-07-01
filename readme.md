@@ -31,13 +31,17 @@ alt所负责的功能，大致含义是 内部操作。
 - `capslock-z-j` 打开最近的文件夹，`ctrl-alt-f11`
 - `capslock-r-u-n` 执行运行程序的命令
 - `capslock-b-u-g` 执行调试程序的命令
-- 
+- `capslock命令停留模式：wt` 打开window terminal程序
+- `capslock命令停留模式: trans` 打开stranslate的主窗口 `ctrl-alt-t`
 
 ## 编辑器内部操作
 
 - `space-f` 搜文件内容`ctrl-f`
 - `space-f-d`搜索目录内容 `ctrl-shift-f`
 - `space-t-h` 替换内容 `ctrl-h`
+- `space-f-f-<words>` 查找下一个 子串 `<words>`
+- `space-f-jkjkj` 跳转到`[jk]`j是下一个，k是上一个匹配项任意输入,按下触发
+- `space-f-f` 查找下一个空格
 - `space-s` 保存文件  `ctrl-s`
 - `space-a` 选中所有内容  `ctrl-a`
 - `space-k-j-h-l` 光标的上下移动
@@ -51,7 +55,7 @@ alt所负责的功能，大致含义是 内部操作。
 - `space-k` 跳出括号外 `ctrl-shift-k`
 - `ctrl-shift-上下左右` 多光标操作`multiCursorModifier` 也可以使用`ctrl-鼠标点击`更灵活添加光标 
 - `space-e` 移动到行尾end line `ctrl-shift-e`
-- `space-b` 移动到行首begin line `ctrl-shift-b` 
+- `space-b` 移动到行首begin line `ctrl-shift-b`
 - `space-d-d` 删除当前行 `ctrl-shift-d`
 - `space-l-c` 清空当前行 先end然后shift home然后delete
 - `space-x` 删除当前光标处的字符 `del`
@@ -76,7 +80,12 @@ alt所负责的功能，大致含义是 内部操作。
 > VS Code 的go back功能依赖于一个名为"**导航历史栈 (Navigation Stack)**"的队列，它按照“后进先出”的顺序记录你的“有效跳转”[](https://www.php.cn/faq/2190134.html)[](https://ask.csdn.net/questions/8967705)[](https://www.php.cn/faq/2255601.html)。只有通过 `Ctrl+Click`、`F12`、`Ctrl+Shift+O`、`Ctrl+P` 搜索跳转等“语义化导航”触发的位置才会被记录
 > 
 真正的光标历史跳转，需要安装插件，这里任意选择一款：MetaJump
-- `space-c-c`翻译 `ctrl-alt-F12`
+- `space-c-c` 复制到 copyq 复制缓冲区 c 号`ctrl-shift-h`
+- `space-c-a` 复制到 copyq 复制缓冲区 a 号
+- `space-c-b` 复制到 copyq 复制缓冲区 b 号
+- `space-c-d` 复制到 copyq 复制缓冲区 d 号
+- `space-v-v` 打开 copyq 剪切板面板 
+- `ctrl-c-c` 将选中的内容交给 stranslate 翻译
 ### 配合MetaJump的快捷键更改
 
 metajump是metago工具中的一个部分，可以被单独安装。
@@ -190,3 +199,33 @@ alt 如果表示不了的，使用 space-alt 表示。
 例如win alt这些拥有大量原生快捷键，我们不去影响，但是原生快捷键没法做到长键程，只能做到接一个非控制键，而我们在这之前就只监听，不捕获，如果发现输入了2个非控制键，那么我们就进行捕获！
 
 只针对单控制键，如果出现多控制键则取消捕获。
+
+## 全局快捷键
+
+| 快捷键              | 功能             | 说明                    |
+| ---------------- | -------------- | --------------------- |
+| `Ctrl + Alt + P` | 暂停 (`Pause`)   | 暂停当前正在运行的线程（如循环）。     |
+| `Ctrl + Alt + S` | 挂起 (`Suspend`) | 禁用/启用所有热键和热字符串。       |
+| `Ctrl + Alt + R` | 重启 (`Reload`)  | 重新加载整个脚本，重置所有状态。      |
+| `Ctrl + Esc`     | 暂停 + 挂起        | 同时暂停线程并禁用热键，实现“紧急停止”。 |
+|                  |                |                       |
+## 复习测试时间
+
+📋 复习间隔日期表：
+[原始日期]  ` 已复习时间2026-4-4`
+已延误，更改时间如下：
+[+  1天]   `复习时间2026-4-18`
+[+  3天]   `复习时间2026-4-21`
+[+  7天]   `复习时间2026-4-28`
+[+ 15天]   `复习时间2026-5-13`
+[+ 30天]   `复习时间2026-6-12`
+[+100天]   `复习时间2026-9-20`
+
+1. 至少要知道vscode的视图机制。
+2. 我的快捷操作使用了那些控制键？
+3. 我有做键盘按键的基本映射吗？
+4. 分为了哪几大类？
+5. 我最初就是为了只读操作而被吸引花了两天完成这个东西，一定要知道只读的快捷键。
+6. 最厉害的其实是 命令行 alt-c 以及 跳转 capslockk-t
+7. 打开文件的快捷键是？
+8. 
