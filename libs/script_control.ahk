@@ -21,7 +21,7 @@ A_TrayMenu.Default := "暂停脚本 (Ctrl+Alt+P)"  ; 双击托盘执行暂停切
 #SuspendExempt
 ^!p:: {
     Pause(-1)      ; -1 表示切换（暂停 ↔ 恢复）
-    ShowStatus("暂停状态: " . (A_IsPaused ? "已暂停" : "运行中"))
+    ShowStatus("暂停状态: " . (A_IsPaused ? "已暂停⏸️" : "运行中▶️"))
 }
 #SuspendExempt False
 
@@ -29,7 +29,7 @@ A_TrayMenu.Default := "暂停脚本 (Ctrl+Alt+P)"  ; 双击托盘执行暂停切
 #SuspendExempt
 ^!s:: {
     Suspend()      ; 切换挂起
-    ShowStatus("热键状态: " . (A_IsSuspended ? "已挂起" : "已启用"))
+    ShowStatus("热键状态: " . (A_IsSuspended ? "已挂起🚫" : "已启用✅"))
 }
 #SuspendExempt False
 
@@ -47,25 +47,42 @@ A_TrayMenu.Default := "暂停脚本 (Ctrl+Alt+P)"  ; 双击托盘执行暂停切
 ^Esc:: {
     Suspend()      ; 切换挂起
     Pause(-1)      ; 切换暂停
-    ShowStatus("紧急停止: " . (A_IsPaused ? "已暂停" : "已运行") . " | " . (A_IsSuspended ? "热键已挂起" : "热键已启用"))
+    ShowStatus("紧急停止: " . (A_IsPaused ? "已暂停⏸️" : "已运行▶️") . " | " . (A_IsSuspended ? "热键已挂起🚫" : "热键已启用✅"))
+    ; 因为暂停时无法清空tooltip，所以在暂停前清空
+    Sleep(2000)
+    ToolTip()
+
+}
+#SuspendExempt False
+
+; 5. 显示脚本控制状态 (Ctrl+Alt+I)
+#SuspendExempt
+^!i:: {
+    status := "📊 脚本控制状态`n"
+    status .= "─────────────`n"
+    status .= "⏸️ 运行状态: " . (A_IsPaused ? "已暂停⏸️" : "运行中▶️") . "`n"
+    status .= "🚫 挂起状态: " . (A_IsSuspended ? "已挂起🚫" : "已启用✅") . "`n"
+    status .= "📁 脚本名称: " . A_ScriptName . "`n"
+    status .= "📂 脚本路径: " . A_ScriptDir
+    ShowStatus(status, 5000)
 }
 #SuspendExempt False
 
 ; ---------- 辅助函数 ----------
 ; 显示临时状态提示（2秒后自动消失）
-ShowStatus(message) {
+ShowStatus(message, duration := 2000) {
     ToolTip(message)
-    SetTimer(() => ToolTip(), -2000)  ; 2秒后清除
+    SetTimer(() => ToolTip(), -duration)  ; duration后清除
 }
 
 ; ---------- 托盘菜单回调函数 ----------
 TogglePause(*) {
     Pause(-1)
-    ShowStatus("暂停状态: " . (A_IsPaused ? "已暂停" : "运行中"))
+    ShowStatus("暂停状态: " . (A_IsPaused ? "已暂停⏸️" : "运行中▶️"))
 }
 ToggleSuspend(*) {
     Suspend()
-    ShowStatus("热键状态: " . (A_IsSuspended ? "已挂起" : "已启用"))
+    ShowStatus("热键状态: " . (A_IsSuspended ? "已挂起🚫" : "已启用✅"))
 }
 ReloadScript(*) {
     ShowStatus("正在重启脚本...")
