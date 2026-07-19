@@ -48,12 +48,7 @@ LeaderTimeControlKeyDownHandler(key) {
 ; Space Leader释放时处理 hotkey 映射的函数
 space_up_handler() {
     global followingKeys, followingControlKeys, handler_id
-    ; 普通释放触发快捷键的逻辑
-    ; 如果有其他处理函数，那么不要再处理
-    if handler_id != "" {
-        return
-    }
-    shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    shortcutKeywords := Trim(followingControlKeys . followingKeys) ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
     switch (shortcutKeywords) {
         case "f":
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
@@ -249,18 +244,17 @@ space_up_handler() {
 
 ; CapsLock Leader释放时处理 hotkey 映射的函数
 caps_lock_up_handler() {
+    OutputDebug("进入caps_lock_up_handler函数")
     global followingKeys, followingControlKeys, handler_id
-    ; 普通释放触发快捷键的逻辑
-    ; 如果有其他处理函数，那么不要再处理
-    if handler_id != "" {
-        return
-    }
-    shortcutKeywords := followingControlKeys . followingKeys ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    shortcutKeywords := Trim(followingControlKeys . followingKeys) ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    OutputDebug("caps_lock_up_handler，shortcutKeywords: " . shortcutKeywords)
     ; 先进行前缀匹配 wait_input 模式
     switch shortcutKeywords {
         case "":
             ; 开启wait_input模式
+            OutputDebug("状态: 开启wait_input模式")
             global handler_mode := "wait_input"
+            global handler_id := "capslock_wait_input"
         default:
             ; 如果已经是wait_input 模式那么进行匹配
             if handler_mode == "wait_input" {
@@ -294,6 +288,7 @@ caps_lock_up_handler() {
                 capslock_release_hot_key(shortcutKeywords)
             }
     }
+    OutputDebug("退出caps_lock_up_handler")
 }
 
 capslock_release_hot_key(shortcutKeywords) {

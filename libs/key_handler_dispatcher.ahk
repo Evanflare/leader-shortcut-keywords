@@ -17,6 +17,9 @@ global handlers := Map()             ; 存储所有处理函数，键为命令ID
 handlers["hjkl"] := leaderMoveKeyHandler
 handlers["wheel_jk"] := wheel_jk_handler
 handlers["search_jk"] := search_jk
+handlers["space_wait_input"] := DefaultHandler
+handlers["capslock_wait_input"] := DefaultHandler
+handlers["default"] := DefaultHandler
 ; 可以继续添加……
 ; 默认处理函数（当所有 handler 都不ready时）
 DefaultHandler(keyName) {
@@ -46,8 +49,10 @@ dispatcher(keyName) {
             handler := handlers[handler_id]
             handler(keyName)   ; 调用匹配的处理函数（通常不需要返回值）
         } else {
+            OutputDebug("warning: handler_id对应的处理函数不存在，可能是注册顺序问题或未注册")
+            OutputDebug("handler_id: " . handler_id)
             ; 如果 ID 不存在（理论上不会发生），清理状态并降级
-            handler_id := ""
+            handler_id := "default"
             dispatcher(keyName)   ; 递归调用，重新走空 ID 逻辑
         }
     }

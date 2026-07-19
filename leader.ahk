@@ -27,7 +27,7 @@ followingKeys := ""
 ; 存储Leader时间内的控制键输入，比如Alt键
 followingControlKeys := ""
 ; 当前命令的处理函数id
-handler_id := ""
+handler_id := "default"
 ; 当前处理函数的模式
 handler_mode := "default"
 exit_wait_input_should := false

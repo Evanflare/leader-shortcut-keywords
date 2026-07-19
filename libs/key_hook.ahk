@@ -42,24 +42,33 @@ ResetAltKeyState() {
 ; Space按键的 按压事件捕捉
 $Space::
 {
-    ;激活Space模式
-    global SpaceActive, CapsActive, exit_wait_input_should
-    CapsActive := false
-    SpaceActive := true
     if handler_mode == "wait_input" {
-        exit_wait_input_should := true
+        if handler_id != "space_wait_input" {
+            ; 作为普通键入处理
+            dispatcher(" ")  ; 发送空格键
+        }
+    } else {
+        ;激活Space模式
+        global SpaceActive, CapsActive
+        CapsActive := false
+        SpaceActive := true
     }
     input_keys_tip_dialog
 }
 ; CapsLock按键的 按压事件捕捉
 $CapsLock::
 {
-    ;激活CapsLock模式
-    global SpaceActive, CapsActive, exit_wait_input_should
-    SpaceActive := false
-    CapsActive := true
     if handler_mode == "wait_input" {
-        exit_wait_input_should := true
+        if handler_id != "capslock_wait_input" {
+            ; 作为普通键入处理
+            ; capslock 键入视为空格
+            dispatcher(" ")  ; 发送空格键
+        }
+    } else {
+        ;激活CapsLock模式
+        global SpaceActive, CapsActive
+        SpaceActive := false
+        CapsActive := true
     }
     input_keys_tip_dialog
 }
@@ -68,6 +77,12 @@ $CapsLock::
 ; Space释放事件捕捉
 $Space Up::
 {
+    ; 先判断是否处于wait_input模式，如果是，则不执行释放事件，等待下一次输入
+    global handler_mode, handler_id
+    ; 如果在wait_input模式，触发非启动键的释放事件，不做任何事情。
+    if handler_mode == "wait_input" && handler_id != "space_wait_input" {
+        return
+    }
     global followingKeys
     if followingKeys != "" {
         space_up_handler
@@ -86,23 +101,37 @@ $Space Up::
 ; CapsLock释放事件捕捉
 $CapsLock Up::
 {
-    global followingKeys
+    OutputDebug("进入CapsLock Up处理函数")
+    ; 先判断是否处于wait_input模式，如果是，则不执行释放事件，等待下一次输入
+    global handler_mode, handler_id
+    OutputDebug("handler_mode: " . handler_mode . ", handler_id: " . handler_id)
+    ; 如果在wait_input模式，触发非启动键的释放事件，不做任何事情。
+    if handler_mode == "wait_input" && handler_id != "capslock_wait_input" {
+        OutputDebug("处于wait_input模式，且handler_id不为capslock_wait_input，直接返回")
+        return
+    }
+    OutputDebug("调用caps_lock_up_handler函数")
     caps_lock_up_handler
+    OutputDebug("调用LeaderDestructor函数")
     LeaderDestructor() ; 调用析构函数，重置状态和执行命令
+    OutputDebug("退出CapsLock Up处理函数")
     ; TODO: 这里潜藏了bug，如果同时按下两个Leader键，比如先按下Space，再按下CapsLock，然后释放CapsLock，这时候会执行Leader1的命令，但是Leader2的状态没有被重置，导致后续的Space释放会执行两次命令，所以这里我们需要在释放CapsLock的时候重置CapsActive状态，避免这个问题。
 }
 
 ; Leader键释放时触发的析构函数，用于重置状态和执行命令
 LeaderDestructor() {
+    OutputDebug("进入LeaderDestructor函数")
     global SpaceActive, CapsActive, followingKeys, followingControlKeys, handler_id, handler_mode,
         exit_wait_input_should
     ; 需要特殊判断是否为命令停留模式
     if handler_mode == "wait_input" {
+        OutputDebug("进入wait_input分支")
         if exit_wait_input_should {
+            OutputDebug("进入exit_wait_input_should分支=true")
             ; 重置状态
             followingControlKeys := "" ; 重置followingControlKeys字符串
             followingKeys := "" ; 重置followingKeys字符串
-            handler_id := "" ; 重置handler_id为空
+            handler_id := "default" ; 重置handler_id为default
             SpaceActive := false
             CapsActive := false
             handler_mode := "default"
@@ -114,16 +143,18 @@ LeaderDestructor() {
             exit_wait_input_should := true
         }
     } else {
+        OutputDebug("进入非wait_input分支")
         handler_mode := "default"
         ; 重置状态
         followingControlKeys := "" ; 重置followingControlKeys字符串
         followingKeys := "" ; 重置followingKeys字符串
-        handler_id := "" ; 重置handler_id为空
+        handler_id := "default" ; 重置handler_id为空
         SpaceActive := false
         CapsActive := false
         ;重置提示窗
         ToolTip
     }
+    OutputDebug("退出LeaderDestructor函数")
 }
 ; 只有在Leader模式激活时才捕捉下面的键
 #HotIf CapsActive || SpaceActive
