@@ -197,7 +197,7 @@ $w:: dispatcher("w")
 $x:: dispatcher("x")
 $y:: dispatcher("y")
 $z:: dispatcher("z")
-
+$BackSpace:: dispatcher("BackSpace")
 ;  捕捉Alt键
 $LAlt:: ControlKeysHandler("Alt")  ; 捕捉Alt键，传入当前热键作为参数
 $RAlt:: ControlKeysHandler("Alt")

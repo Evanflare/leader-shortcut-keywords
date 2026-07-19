@@ -27,12 +27,15 @@ DefaultHandler(keyName) {
 }
 ; ---------- 分发器 ----------
 dispatcher(keyName) {
+    OutputDebug("进入dispatcher函数, key down: " . keyName)
     global handler_id, handlers
+    OutputDebug("handler_id: " . handler_id)
     ; 1. 如果 handler_id 为空，则让所有 handler 依次尝试处理
     if (handler_id == "") {
         for id, handler in handlers {
             ; 调用处理函数
             if (handler_id == "") {
+                ; 如果handler_id仍然等于空,继续依次处理
                 handler(keyName)
             } else {
                 break
@@ -47,12 +50,13 @@ dispatcher(keyName) {
     else {
         if (handlers.Has(handler_id)) {
             handler := handlers[handler_id]
+            OutputDebug("调用到handler_id对应的处理函数")
             handler(keyName)   ; 调用匹配的处理函数（通常不需要返回值）
         } else {
             OutputDebug("warning: handler_id对应的处理函数不存在，可能是注册顺序问题或未注册")
             OutputDebug("handler_id: " . handler_id)
             ; 如果 ID 不存在（理论上不会发生），清理状态并降级
-            handler_id := "default"
+            handler_id := ""
             dispatcher(keyName)   ; 递归调用，重新走空 ID 逻辑
         }
     }

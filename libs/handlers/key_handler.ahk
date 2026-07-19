@@ -9,6 +9,8 @@
 #Include ../../leader.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
+    OutputDebug("进入keysHandler函数，普通释放触发键的处理函数")
+    OutputDebug("key down: " . key)
     ; Leader激活，调用处理函数
     LeaderTimeKeyDownHandler(key)
     ; 小框提示当前Leader键和followingKeys
@@ -27,10 +29,20 @@ ControlKeysHandler(keyName) {
 
 ; 处理Leader模式下捕捉到的键与 follwingKeys 的关系
 LeaderTimeKeyDownHandler(key) {
+    OutputDebug("进入LeaderTimeKeyDownHandler函数")
+    OutputDebug("key down: " . key)
     global followingKeys
     ; 这里控制键我们不去重，因为有些组合快捷键是需要同时按下多个控制键的，比如 space-t-t-y
-    ; 所以我们允许重复按下控制键，直接追加就行了
-    followingKeys .= key
+    ; 有些特殊的键需要处理
+    switch key {
+        case "BackSpace":
+            ; followingkeys 删除最后的一个符号
+            followingKeys := SubStr(followingKeys, 1, -1)
+        default:
+            ; 直接追加就行了
+            followingKeys .= key
+    }
+    OutputDebug("退出LeaderTimeKeyDownHandler函数")
 }
 ; 处理Leader模式下捕捉到的控制键与 followingControlKeys 的关系
 LeaderTimeControlKeyDownHandler(key) {
