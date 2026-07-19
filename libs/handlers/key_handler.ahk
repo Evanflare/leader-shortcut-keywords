@@ -259,7 +259,8 @@ caps_lock_up_handler() {
     OutputDebug("进入caps_lock_up_handler函数")
     global followingKeys, followingControlKeys, handler_id
     shortcutKeywords := Trim(followingControlKeys . followingKeys) ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
-    OutputDebug("caps_lock_up_handler，shortcutKeywords: " . shortcutKeywords)
+    OutputDebug("shortcutKeywords: " . shortcutKeywords)
+    OutputDebug("shortcutKeywords.len = " . StrLen(shortcutKeywords))
     ; 先进行前缀匹配 wait_input 模式
     switch shortcutKeywords {
         case "":
@@ -291,6 +292,9 @@ caps_lock_up_handler() {
                     case "copyq":
                         ; 打开 copyq 界面
                         Send "^!v" ; 打开 copyq 界面
+                    case "win l s":
+                        ; powertoys的light switch
+                        Send "#{F5}"
                     default:
                         ; 不匹配，小小提示音
                         SoundPlay("*-1")
