@@ -89,7 +89,14 @@ space_up_handler() {
             ;Send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
             Send "{Home}" ; 这里是为了兼容一些不支持`ctrl-shift-b`的应用，比如Windows Terminal，直接发送Home键就可以了
         case "dd":
-            Send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
+            ;Send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
+            ; 使用更通用的删除行实现方式
+            Send "{End}"
+            Send "+{Home}"
+            Sleep 50
+            Send "{Delete}"
+            ; 删除\n
+            Send "{Backspace}"
         case "lc": ; 清空当前行`space-l-c` 清空当前行
             Send "{End}"
             Send "+{Home}"
