@@ -9,6 +9,7 @@
 ; 如果handler_id不为空，并且还调用了这个handler那么默认由自己处理(由dispatch确定调用哪一个handler函数)
 ; 进行前缀匹配 匹配 space leader 下的 hh jj kk ll
 leaderMoveKeyHandler(keyName) {
+    OutputDebug("进入 leaderMoveKeyHandler, key down :" . keyName)
     ; 当处理函数的id为空的时候，进行前缀匹配
     global handler_id
     if handler_id == "" {

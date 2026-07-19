@@ -61,6 +61,10 @@ LeaderTimeControlKeyDownHandler(key) {
 space_up_handler() {
     global followingKeys, followingControlKeys, handler_id
     shortcutKeywords := Trim(followingControlKeys . followingKeys) ; 将控制键和普通键合并成一个字符串，方便后续的switch判断
+    if handler_id != "" {
+        OutputDebug("handler_id != '', 说明已有输入已做处理，普通映射处理不应再生效。")
+        return
+    }
     switch (shortcutKeywords) {
         case "f":
             Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
@@ -296,6 +300,10 @@ caps_lock_up_handler() {
                 SoundPlay("*-1")
         }
     } else {
+        if handler_id != "" {
+            OutputDebug("handler_id != '', 说明已有输入已做处理，普通映射处理不应再生效。")
+            return
+        }
         if shortcutKeywords == "" {
             ; 开启wait_input模式
             OutputDebug("状态: 开启wait_input模式")

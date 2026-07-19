@@ -131,7 +131,7 @@ LeaderDestructor() {
             ; 重置状态
             followingControlKeys := "" ; 重置followingControlKeys字符串
             followingKeys := "" ; 重置followingKeys字符串
-            handler_id := "default" ; 重置handler_id为default
+            handler_id := "" ; 重置handler_id为default
             SpaceActive := false
             CapsActive := false
             handler_mode := "default"
@@ -148,7 +148,7 @@ LeaderDestructor() {
         ; 重置状态
         followingControlKeys := "" ; 重置followingControlKeys字符串
         followingKeys := "" ; 重置followingKeys字符串
-        handler_id := "default" ; 重置handler_id为空
+        handler_id := "" ; 重置handler_id为空
         SpaceActive := false
         CapsActive := false
         ;重置提示窗

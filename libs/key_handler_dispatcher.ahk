@@ -17,47 +17,54 @@ global handlers := Map()             ; 存储所有处理函数，键为命令ID
 handlers["hjkl"] := leaderMoveKeyHandler
 handlers["wheel_jk"] := wheel_jk_handler
 handlers["search_jk"] := search_jk
-handlers["space_wait_input"] := DefaultHandler
-handlers["capslock_wait_input"] := DefaultHandler
-handlers["default"] := DefaultHandler
 ; 可以继续添加……
 ; 默认处理函数（当所有 handler 都不ready时）
 DefaultHandler(keyName) {
+    OutputDebug("进入默认handler")
     KeysHandler(keyName)
 }
 ; ---------- 分发器 ----------
 dispatcher(keyName) {
     OutputDebug("进入dispatcher函数, key down: " . keyName)
-    global handler_id, handlers
-    OutputDebug("handler_id: " . handler_id)
-    ; 1. 如果 handler_id 为空，则让所有 handler 依次尝试处理
-    if (handler_id == "") {
-        for id, handler in handlers {
-            ; 调用处理函数
+    ; 如果在wait_input模式
+    global handler_mode
+    if handler_mode == "wait_input" {
+        ; wait_input 模式直接进行默认的处理
+        DefaultHandler(keyName)
+    } else {
+        global handler_id, handlers
+        OutputDebug("handler_id: " . handler_id)
+        ; 1. 如果 handler_id 为空，则让所有 handler 依次尝试处理，当有某handler检测到条件会占有handler_id
+        if (handler_id == "") {
+            for id, handler in handlers {
+                ; 调用处理函数
+                if (handler_id == "") {
+                    ; 如果handler_id仍然等于空,继续依次处理
+                    handler(keyName)
+                } else {
+                    break
+                }
+            }
+            ; 当handler_id始终为空，交给默认处理
             if (handler_id == "") {
-                ; 如果handler_id仍然等于空,继续依次处理
-                handler(keyName)
-            } else {
-                break
+                OutputDebug("handler_id始终为空，调用默认handler")
+                DefaultHandler(keyName)
             }
         }
-        ; 当handler_id始终为空，交给默认处理
-        if (handler_id == "") {
-            DefaultHandler(keyName)
+        ; 2. 如果 handler_id 不为空，则只调用对应的 handler
+        else {
+            if (handlers.Has(handler_id)) {
+                handler := handlers[handler_id]
+                OutputDebug("调用到handler_id对应的处理函数")
+                handler(keyName)   ; 调用匹配的处理函数（通常不需要返回值）
+            } else {
+                OutputDebug("warning: handler_id对应的处理函数不存在，可能是注册顺序问题或未注册")
+                OutputDebug("handler_id: " . handler_id)
+                ; 如果 ID 不存在（理论上不会发生），清理状态并降级
+                handler_id := ""
+                dispatcher(keyName)   ; 递归调用，重新走空 ID 逻辑
+            }
         }
     }
-    ; 2. 如果 handler_id 不为空，则只调用对应的 handler
-    else {
-        if (handlers.Has(handler_id)) {
-            handler := handlers[handler_id]
-            OutputDebug("调用到handler_id对应的处理函数")
-            handler(keyName)   ; 调用匹配的处理函数（通常不需要返回值）
-        } else {
-            OutputDebug("warning: handler_id对应的处理函数不存在，可能是注册顺序问题或未注册")
-            OutputDebug("handler_id: " . handler_id)
-            ; 如果 ID 不存在（理论上不会发生），清理状态并降级
-            handler_id := ""
-            dispatcher(keyName)   ; 递归调用，重新走空 ID 逻辑
-        }
-    }
+
 }
