@@ -286,7 +286,7 @@ caps_lock_up_handler() {
                         ; 4. 确保窗口可见（防止被最小化/隐藏）
                         WinRestore(hwnd)
                         WinShow(hwnd)
-                    case "trans":
+                    case "fy":
                         ; 打开translate界面
                         Send "^!t"
                     case "copyq":
