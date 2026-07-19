@@ -262,47 +262,49 @@ caps_lock_up_handler() {
     OutputDebug("shortcutKeywords: " . shortcutKeywords)
     OutputDebug("shortcutKeywords.len = " . StrLen(shortcutKeywords))
     ; 先进行前缀匹配 wait_input 模式
-    switch shortcutKeywords {
-        case "":
+    ; 如果已经是wait_input 模式那么进行匹配
+    if handler_mode == "wait_input" {
+        switch shortcutKeywords {
+            case "":
+                ; 打开powertoys命令面板中的窗口切换器
+                Send "#{F12}"
+            case "wt":
+                Run "wt.exe --window new", , , &pid
+
+                ; 2. 等待窗口出现（官方必用步骤）
+                hwnd := WinWait("ahk_pid " pid, , 2)
+                if (!hwnd)
+                    return
+
+                ; 3. 官方激活（内部已含重试与 Alt 解锁）
+                WinActivate(hwnd)
+
+                ; 4. 确保窗口可见（防止被最小化/隐藏）
+                WinRestore(hwnd)
+                WinShow(hwnd)
+            case "fy":
+                ; 打开translate界面
+                Send "^!t"
+            case "copyq":
+                ; 打开 copyq 界面
+                Send "^!v" ; 打开 copyq 界面
+            case "win l s":
+                ; powertoys的light switch
+                Send "#{F5}"
+            default:
+                ; 不匹配，小小提示音
+                SoundPlay("*-1")
+        }
+    } else {
+        if shortcutKeywords == "" {
             ; 开启wait_input模式
             OutputDebug("状态: 开启wait_input模式")
             global handler_mode := "wait_input"
             global handler_id := "capslock_wait_input"
-        default:
-            ; 如果已经是wait_input 模式那么进行匹配
-            if handler_mode == "wait_input" {
-                switch shortcutKeywords {
-                    case "wt":
-                        Run "wt.exe --window new", , , &pid
+        } else {
+            capslock_release_hot_key(shortcutKeywords)
+        }
 
-                        ; 2. 等待窗口出现（官方必用步骤）
-                        hwnd := WinWait("ahk_pid " pid, , 2)
-                        if (!hwnd)
-                            return
-
-                        ; 3. 官方激活（内部已含重试与 Alt 解锁）
-                        WinActivate(hwnd)
-
-                        ; 4. 确保窗口可见（防止被最小化/隐藏）
-                        WinRestore(hwnd)
-                        WinShow(hwnd)
-                    case "fy":
-                        ; 打开translate界面
-                        Send "^!t"
-                    case "copyq":
-                        ; 打开 copyq 界面
-                        Send "^!v" ; 打开 copyq 界面
-                    case "win l s":
-                        ; powertoys的light switch
-                        Send "#{F5}"
-                    default:
-                        ; 不匹配，小小提示音
-                        SoundPlay("*-1")
-                }
-            } else {
-                ; 没有匹配项再进行普通释放快捷键匹配
-                capslock_release_hot_key(shortcutKeywords)
-            }
     }
     OutputDebug("退出caps_lock_up_handler")
 }
