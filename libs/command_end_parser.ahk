@@ -396,7 +396,6 @@ capslock_command_wait_input(shortcutKeywords) {
                 WinRestore(hwnd)
                 WinShow(hwnd)
             }
-
         case "fy":
             ; 打开translate界面
             Send "^!t"
@@ -407,8 +406,9 @@ capslock_command_wait_input(shortcutKeywords) {
             ; powertoys的light switch
             Send "#{F5}"
         default:
-            ; 不匹配，小小提示音
-            SoundPlay("*-1")
+            ; 不匹配，交给热键映射
+            capslock_command_hot_key userInput
+
     }
 }
 
