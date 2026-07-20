@@ -14,8 +14,6 @@
 ;3.如果在Leader模式下没有输入其他键，直接发送Leader键的原始功能。
 ;4.在Leader模式下，按下的其他键会被记录下来，并在释放Leader键时根据记录的键来执行对应的操作。
 ;5.在Leader模式下，按下的其他键会在小框中提示当前的Leader键和输入的其他键。
-
-#Include libs\action\jump_line_number.ahk
 ;定义Leader键和Leader键的触发状态
 Leader1 := "CapsLock"
 Leader2 := "Space"
@@ -40,9 +38,10 @@ input_keys_tip_dialog() {
         ToolTip "CapsLock: " . followingControlKeys . followingKeys
     }
 }
+
 ; 搜索记忆
 search_key_words_memory := " "
-
-#Include libs\script_control.ahk
-#Include libs\key_hook.ahk
-#Include libs\handlers\key_handler.ahk
+; 用于保存 InputBox 的窗口句柄
+global InputBoxHwnd := 0
+#Include ./libs/script_control.ahk
+#Include ./libs/key_hook.ahk

@@ -8,10 +8,10 @@
 #Include ../leader.ahk
 global handlers := Map()             ; 存储所有处理函数，键为命令ID（字符串），值为函数对象
 ; ---------- 注册处理函数 ----------
-#Include handlers\key_handler.ahk
-#Include handlers\hjkl_move.ahk
-#Include handlers\wheel_jk.ahk
-#Include handlers\search_jk.ahk
+#Include ./command_end_parser.ahk
+#Include ./commanding_parser/hjkl_move.ahk
+#Include ./commanding_parser/wheel_jk.ahk
+#Include ./commanding_parser/search_jk.ahk
 ; 注意注册顺序：先注册的会优先获得处理权（当 ready_command_id 为空时）
 ; 最好在handler目录排查冲突的快捷键，避免发生冲突
 handlers["hjkl"] := leaderMoveKeyHandler
