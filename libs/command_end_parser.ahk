@@ -405,10 +405,13 @@ capslock_command_wait_input(shortcutKeywords) {
         case "win l s":
             ; powertoys的light switch
             Send "#{F5}"
+        case "restart":
+            Send "^!r"
+        case "pause":
+            Send "^!p"
         default:
             ; 不匹配，交给热键映射
             capslock_command_hot_key userInput
-
     }
 }
 
