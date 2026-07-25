@@ -409,6 +409,8 @@ capslock_command_wait_input(shortcutKeywords) {
             Send "^!r"
         case "pause":
             Send "^!p"
+        case "time":
+            SendText FormatTime(A_Now, "yyyy-MM-dd HH:mm")
         default:
             ; 不匹配，交给热键映射
             capslock_command_hot_key userInput
