@@ -8,6 +8,7 @@
 ; ========================================
 #Include ../leader.ahk
 #Include action/jump_matched_point.ahk
+#Include action/review_time.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
     OutputDebug("进入keysHandler函数，普通释放触发键的处理函数")
@@ -411,6 +412,9 @@ capslock_command_wait_input(shortcutKeywords) {
             Send "^!p"
         case "time":
             SendText FormatTime(A_Now, "yyyy-MM-dd HH:mm")
+        case "review time":
+            schedule := generate_review_schedule()
+            A_Clipboard := schedule
         default:
             ; 不匹配，交给热键映射
             capslock_command_hot_key userInput
