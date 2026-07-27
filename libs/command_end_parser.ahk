@@ -364,6 +364,9 @@ capslock_command_hot_key(shortcutKeywords) {
             Send "!{Right}"
         case "zj":
             Send "^!{F11}" ; 查看最近打开的文件列表
+        case "fy":
+            ; 打开translate界面
+            Send "^!t"
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
