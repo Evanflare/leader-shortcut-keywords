@@ -9,6 +9,7 @@
 #Include ../leader.ahk
 #Include action/jump_matched_point.ahk
 #Include action/review_time.ahk
+#Include action/record_send.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
     OutputDebug("进入keysHandler函数，普通释放触发键的处理函数")
@@ -78,149 +79,149 @@ space_command_parser() {
     } else {
         switch (shortcutKeywords) {
             case "f":
-                Send "^f"  ; `space-f` 搜文件内容`ctrl-f`
+                record_and_send "^f"  ; `space-f` 搜文件内容`ctrl-f`
             case "th": ; 替换内容
-                Send "^h"
+                record_and_send "^h"
             case "fd":
-                Send "^+f"  ; `space-f-d`搜索目录内容 `ctrl-shift-f`
+                record_and_send "^+f"  ; `space-f-d`搜索目录内容 `ctrl-shift-f`
             case "fh":
-                Send "^+a" ; `space-f-h`搜索文件路径 `ctrl-shift-a`
+                record_and_send "^+a" ; `space-f-h`搜索文件路径 `ctrl-shift-a`
             case "ff": ; 查找下一个空格
                 ;存储一下搜索记忆
                 global search_key_words_memory := "(?<=[^ ])( )(?=[^ ])"
-                Send "^f"
+                record_and_send "^f"
                 ; 清空搜索框
                 Sleep 10
-                Send "^a"
-                Send "{Delete}"
-                SendText "(?<=[^ ])( )(?=[^ ])"
+                record_and_send "^a"
+                record_and_send "{Delete}"
+                record_and_sendText "(?<=[^ ])( )(?=[^ ])"
                 Sleep 10
-                Send "{Escape 2}"
+                record_and_send "{Escape 2}"
             case "l":
-                Send "^l"  ; `space-l` 聚焦到地址栏 `ctrl-l`
+                record_and_send "^l"  ; `space-l` 聚焦到地址栏 `ctrl-l`
             case "m":
-                Send "^!m"  ; `space-m` 聚焦中部页面 `ctrl-alt-m`
+                record_and_send "^!m"  ; `space-m` 聚焦中部页面 `ctrl-alt-m`
             case "n":
-                Send "^!n"  ; `space-n` 聚焦到非编辑控件 `ctrl-alt-n`
+                record_and_send "^!n"  ; `space-n` 聚焦到非编辑控件 `ctrl-alt-n`
             case "k":
-                Send "^+k"  ; `space-k` 跳出括号对 `ctrl-shift-k`
+                record_and_send "^+k"  ; `space-k` 跳出括号对 `ctrl-shift-k`
             case "e":
-                ;Send "^+e"  ; `space-e` 光标行尾 end `ctrl-shift-e`
-                Send "{End}" ; 这里是为了兼容一些不支持`ctrl-shift-e`的应用，比如Windows Terminal，直接发送End键就可以了
+                record_and_send "^+e"  ; `space-e` 光标行尾 end `ctrl-shift-e`
+                record_and_send "{End}" ; 这里是为了兼容一些不支持`ctrl-shift-e`的应用，比如Windows Terminal，直接发送End键就可以了
             case "b":
-                ;Send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
-                Send "{Home}" ; 这里是为了兼容一些不支持`ctrl-shift-b`的应用，比如Windows Terminal，直接发送Home键就可以了
+                record_and_send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
+                record_and_send "{Home}" ; 这里是为了兼容一些不支持`ctrl-shift-b`的应用，比如Windows Terminal，直接发送Home键就可以了
             case "dd":
-                ;Send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
+                record_and_send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
                 ; 使用更通用的删除行实现方式
-                Send "{End}"
-                Send "+{Home}"
+                record_and_send "{End}"
+                record_and_send "+{Home}"
                 Sleep 50
-                Send "{Delete}"
+                record_and_send "{Delete}"
                 ; 删除\n
-                Send "{Backspace}"
+                record_and_send "{Backspace}"
             case "lc": ; 清空当前行`space-l-c` 清空当前行
-                Send "{End}"
-                Send "+{Home}"
+                record_and_send "{End}"
+                record_and_send "+{Home}"
                 Sleep 50
-                Send "{Delete}"
+                record_and_send "{Delete}"
             case "db":
                 ; `space-d-b`删除到行首
-                Send "+{Home}"
+                record_and_send "+{Home}"
                 Sleep 50
-                Send "{Delete}"
+                record_and_send "{Delete}"
             case "de":
                 ; `space-d-e`删除到行尾
-                Send "+{End}"
+                record_and_send "+{End}"
                 Sleep 50
-                Send "{Delete}"
+                record_and_send "{Delete}"
             case "cls":
-                Send "^+!c"  ; `space-c-l-s`清空终端 `ctrl-shift-alt-c`
+                record_and_send "^+!c"  ; `space-c-l-s`清空终端 `ctrl-shift-alt-c`
             case "x":
-                Send "{Delete}"  ; `space-x`删除当前字符 `delete`
+                record_and_send "{Delete}"  ; `space-x`删除当前字符 `delete`
             case "gg":
-                Send "^{Home}"  ; `space-g-g`跳转到文件开头 `ctrl-home`
+                record_and_send "^{Home}"  ; `space-g-g`跳转到文件开头 `ctrl-home`
             case "Shiftg":
-                Send "^{End}"  ; `space-Shift-g`跳转到文件结尾 `ctrl-end`
+                record_and_send "^{End}"  ; `space-Shift-g`跳转到文件结尾 `ctrl-end`
             case "s":
-                Send "^s"  ; Ctrl+S 保存
+                record_and_send "^s"  ; Ctrl+S 保存
             case "a":
-                Send "^a"  ; Ctrl+A 全选
+                record_and_send "^a"  ; Ctrl+A 全选
             case "c":
-                Send "^c"  ; Ctrl+C 复制
+                record_and_send "^c"  ; Ctrl+C 复制
             case "v":
-                Send "^v"  ; Ctrl+V 粘贴
+                record_and_send "^v"  ; Ctrl+V 粘贴
             case "vv":
-                Send "^!v" ; 打开 copyq 剪切板界面
+                record_and_send "^!v" ; 打开 copyq 剪切板界面
             case "ca":
-                Send "^+c" ; 复制到copyq复制缓冲区 A 号
+                record_and_send "^+c" ; 复制到copyq复制缓冲区 A 号
             case "cb":
-                Send "^+g" ; 复制到copyq复制缓冲区 B 号
+                record_and_send "^+g" ; 复制到copyq复制缓冲区 B 号
             case "cc":
-                Send "^+h" ; 复制到copyq复制缓冲区 C 号
+                record_and_send "^+h" ; 复制到copyq复制缓冲区 C 号
             case "cd":
-                Send "^!+i" ; 复制到copyq复制缓冲区 D 号
+                record_and_send "^!+i" ; 复制到copyq复制缓冲区 D 号
             case "x":
-                Send "^x"  ; Ctrl+X 剪切
+                record_and_send "^x"  ; Ctrl+X 剪切
             case "gb":
-                Send "^+!u"  ; `space-g-b` 跳转go back `ctrl-shift-alt-u`
+                record_and_send "^+!u"  ; `space-g-b` 跳转go back `ctrl-shift-alt-u`
             case "gf":
-                Send "^+!x"  ; `space-g-f` 跳转go forward `ctrl-shift-alt-x`
+                record_and_send "^+!x"  ; `space-g-f` 跳转go forward `ctrl-shift-alt-x`
             case "zx":
-                Send "+!x" ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
+                record_and_send "+!x" ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
             case "zy":
-                Send "+!y" ; `space-z-y`焦点在组视窗的下一个 `shift-alt-y`
+                record_and_send "+!y" ; `space-z-y`焦点在组视窗的下一个 `shift-alt-y`
             case "zu":
-                Send "+!u"  ; `space-z-u`焦点在组视窗的上一个 `shift-alt-u`
+                record_and_send "+!u"  ; `space-z-u`焦点在组视窗的上一个 `shift-alt-u`
             case "zz":
-                Send "+!z"  ; `space-z-z`焦点在组视窗的上一个 `shift-alt-z`
+                record_and_send "+!z"  ; `space-z-z`焦点在组视窗的上一个 `shift-alt-z`
             case "z1":
-                Send "^+!1"  ; `space-z-1`焦点在组1 `ctrl-shift-alt-1`
+                record_and_send "^+!1"  ; `space-z-1`焦点在组1 `ctrl-shift-alt-1`
             case "z2":
-                Send "^+!2"  ; `space-z-2`焦点在组2 `ctrl-shift-alt-2`
+                record_and_send "^+!2"  ; `space-z-2`焦点在组2 `ctrl-shift-alt-2`
             case "z3":
-                Send "^+!3"  ; `space-z-3`焦点在组3 `ctrl-shift-alt-3`
+                record_and_send "^+!3"  ; `space-z-3`焦点在组3 `ctrl-shift-alt-3`
             case "z4":
-                Send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
+                record_and_send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
             case "Altks":
-                Send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
+                record_and_send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
             case "RAltks":
-                Send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
+                record_and_send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
                 ; 下面是视角切换的处理
             case "Altl1":
-                Send "^!1"  ; `space-alt-l-1`组视窗有 1列 `ctrl-alt-1`
+                record_and_send "^!1"  ; `space-alt-l-1`组视窗有 1列 `ctrl-alt-1`
             case "Altl2":
-                Send "^!2"  ;   `space-alt-l-2`组视窗有 2列 `ctrl-alt-2`
+                record_and_send "^!2"  ;   `space-alt-l-2`组视窗有 2列 `ctrl-alt-2`
             case "Alth2":
-                Send "+!2"  ; `space-alt-h-2`组视窗有 2行 `shift-alt-2`
+                record_and_send "+!2"  ; `space-alt-h-2`组视窗有 2行 `shift-alt-2`
             case "Alth1":
-                Send "^!1"  ; `space-alt-h-1`组视窗有 1行 `ctrl-alt-1`
+                record_and_send "^!1"  ; `space-alt-h-1`组视窗有 1行 `ctrl-alt-1`
             case "Altwg":
-                Send "^!g"  ; `space-alt-w-g`组视窗呈网格 4窗 `ctrl-alt-g`
+                record_and_send "^!g"  ; `space-alt-w-g`组视窗呈网格 4窗 `ctrl-alt-g`
             case "Altux":
-                Send "^!x"  ; `space-alt-u-x`组视窗向下生，并复制当前的文件编辑视图 `ctrl-alt-x`
+                record_and_send "^!x"  ; `space-alt-u-x`组视窗向下生，并复制当前的文件编辑视图 `ctrl-alt-x`
             case "Altuy":
-                Send "^!y"  ; `space-alt-u-y`组视窗向右生，并复制当前的文件编辑视图 `ctrl-alt-y`
+                record_and_send "^!y"  ; `space-alt-u-y`组视窗向右生，并复制当前的文件编辑视图 `ctrl-alt-y`
             case "Altuz":
-                Send "^!z"  ; `space-alt-u-z` `ctrl-alt-z`
+                record_and_send "^!z"  ; `space-alt-u-z` `ctrl-alt-z`
             case "Altu":
-                Send "^!u"  ; `space-alt-u` `ctrl-alt-u`
+                record_and_send "^!u"  ; `space-alt-u` `ctrl-alt-u`
             case "Altuj":
-                Send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
+                record_and_send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
             case "Altls":
-                Send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
+                record_and_send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
             case "Altqp":
-                Send "{F11}"
+                record_and_send "{F11}"
             case "cn":
-                Send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
+                record_and_send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
             case "en":
-                Send "^+8" ; `space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
+                record_and_send "^+8" ; `space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
             case "o":
-                Send "{End}{Enter}"
+                record_and_send "{End}{Enter}"
             case "Shifto":
-                Send "{Up}"
+                record_and_send "{Up}"
                 Sleep 50
-                Send "{End}{Enter}"
+                record_and_send "{End}{Enter}"
             default:
                 switch {
                     case RegExMatch(shortcutKeywords, "^(\d+)$", &groupMatch): ; 匹配纯数字格式
@@ -238,29 +239,29 @@ space_command_parser() {
                         }
                         switch groupMatch[2] {
                             case "h":
-                                Send "{Left " . times . "}"
+                                record_and_send "{Left " . times . "}"
                             case "j":
-                                Send "{Down " . times . "}"
+                                record_and_send "{Down " . times . "}"
                             case "k":
-                                Send "{Up " . times . "}"
+                                record_and_send "{Up " . times . "}"
                             case "l":
-                                Send "{Right " . times . "}"
+                                record_and_send "{Right " . times . "}"
                         }
 
                     case RegExMatch(shortcutKeywords, "^ff(.+)$", &groupMatch): ; 匹配 space-f-f-<words>
                         ; 先存储记忆,因为vscode经常出现ctrl-f直接将当前光标所在字符串作为新的搜索关键词覆盖之前的关键词，所以我们需要自行存储搜索历史
                         global search_key_words_memory := groupMatch[1]
-                        Send "^f"
+                        record_and_send "^f"
                         ; 清空之前的输入
                         ; `space-d-b`删除到行首
-                        Send "^{a}"
+                        record_and_send "^{a}"
                         Sleep 50
-                        Send "{Delete}"
+                        record_and_send "{Delete}"
                         Sleep 50
-                        Send groupMatch[1]
-                        Send "{Escape}"
+                        record_and_send groupMatch[1]
+                        record_and_send "{Escape}"
                         Sleep 50
-                        Send "{Escape}"
+                        record_and_send "{Escape}"
                     default:
                         ; 不匹配，小小提示音
                         SoundPlay("*-1")
@@ -311,17 +312,17 @@ capslock_command_parser() {
 capslock_command_hot_key(shortcutKeywords) {
     switch (shortcutKeywords) {
         case "o":
-            Send "^o"  ; `caplock-o`打开文件`ctrl-o`
+            record_and_send "^o"  ; `caplock-o`打开文件`ctrl-o`
         case "od":
-            Send "^+o"  ; `caplock-o-d`打开文件夹`ctrl-shift-o`
+            record_and_send "^+o"  ; `caplock-o-d`打开文件夹`ctrl-shift-o`
         case "fr":
-            Send "^+r"  ; `caplock-f-r`设置文件的只读性 `ctrl-shift-r`
+            record_and_send "^+r"  ; `caplock-f-r`设置文件的只读性 `ctrl-shift-r`
         case "t":
-            Send "^+!t"        ;`caplock-t` 跳到文件（内部搜索并打开）ctrl-shfit-alt-t
+            record_and_send "^+!t"        ;`caplock-t` 跳到文件（内部搜索并打开）ctrl-shfit-alt-t
         case "c":
-            Send "^{F4}"  ; `caplock-c` 关闭当前文件 `ctrl-F4`
+            record_and_send "^{F4}"  ; `caplock-c` 关闭当前文件 `ctrl-F4`
         case "n":
-            Send "^n"  ; `caplock-n` 新建文件 `ctrl-n`
+            record_and_send "^n"  ; `caplock-n` 新建文件 `ctrl-n`
         case "tty":
             ; `space-t-t-y`打开终端 `space-t-t`是打开终端的前缀，y是terminal的第二个字母
             ; 1. 启动并获取 PID（官方推荐精准匹配方式）
@@ -357,16 +358,16 @@ capslock_command_hot_key(shortcutKeywords) {
             WinShow(hwnd)
             ; 下面是 Space+Alt 组合键的处理
         case "q":
-            Send "!{F4}"
+            record_and_send "!{F4}"
         case "h": ; `cpaslock-h` 浏览器标签页历史向前，`capslock-l` 浏览器标签页历史向后 `alt-左``alt-右`
-            Send "!{Left}"
+            record_and_send "!{Left}"
         case "l":
-            Send "!{Right}"
+            record_and_send "!{Right}"
         case "zj":
-            Send "^!{F11}" ; 查看最近打开的文件列表
+            record_and_send "^!{F11}" ; 查看最近打开的文件列表
         case "fy":
             ; 打开translate界面
-            Send "^!t"
+            record_and_send "^!t"
         default:
             ; 不匹配，小小提示音
             SoundPlay("*-1")
@@ -387,7 +388,7 @@ capslock_command_wait_input(shortcutKeywords) {
     switch userInput {
         case "":
             ; 打开powertoys命令面板中的窗口切换器
-            Send "#{F12}"
+            record_and_send "#{F12}"
         case "wt":
             Run "wt.exe --window new", , , &pid
             ; 2. 等待窗口出现（官方必用步骤）
@@ -402,22 +403,24 @@ capslock_command_wait_input(shortcutKeywords) {
             }
         case "fy":
             ; 打开translate界面
-            Send "^!t"
+            record_and_send "^!t"
         case "copyq":
             ; 打开 copyq 界面
-            Send "^!v" ; 打开 copyq 界面
+            record_and_send "^!v" ; 打开 copyq 界面
         case "win l s":
             ; powertoys的light switch
-            Send "#{F5}"
+            record_and_send "#{F5}"
         case "restart":
-            Send "^!r"
+            record_and_send "^!r"
         case "pause":
-            Send "^!p"
+            record_and_send "^!p"
         case "time":
-            SendText FormatTime(A_Now, "yyyy-MM-dd HH:mm")
+            record_and_sendText FormatTime(A_Now, "yyyy-MM-dd HH:mm")
         case "review time":
             schedule := generate_review_schedule()
             A_Clipboard := schedule
+        case "history":
+            show_history
         default:
             ; 不匹配，交给热键映射
             capslock_command_hot_key userInput

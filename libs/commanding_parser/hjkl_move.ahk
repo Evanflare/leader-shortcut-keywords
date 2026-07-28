@@ -4,6 +4,7 @@
 
 #Include ..\..\leader.ahk
 #Include ../action/jump_line_number.ahk
+#Include ../action/record_send.ahk
 
 ; 子命令模式：hjkl 移动模式
 ; 如果handler_id不为空，并且还调用了这个handler那么默认由自己处理(由dispatch确定调用哪一个handler函数)
@@ -31,13 +32,13 @@ leaderMoveKeyHandler(keyName) {
     }
     switch keyName {
         case "h":
-            Send "{Left}"
+            record_and_send "{Left}"
         case "j":
-            Send "{Down}"
+            record_and_send "{Down}"
         case "k":
-            Send "{Up}"
+            record_and_send "{Up}"
         case "l":
-            Send "{Right}"
+            record_and_send "{Right}"
         default:
             ; 错误的输入，直接丢弃
             return

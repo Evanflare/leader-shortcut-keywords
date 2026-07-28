@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#Include record_send.ahk
 
 jump_point_action(user_input) {
     OutputDebug "进入 jump_point_action 函数"
@@ -17,25 +18,25 @@ jump_point_action(user_input) {
         ; 先定位到指定位置
         find_string := part1 . part2
         OutputDebug "定位到：" . find_string
-        Send "^f"
+        record_and_send "^f"
         Sleep 50
-        SendText find_string
-        Send("{Escape}")
+        record_and_sendText find_string
+        record_and_send "{Escape}"
         Sleep 50
-        Send "{Escape}"
+        record_and_send "{Escape}"
         ; 移动到`所在代表的位置
         OutputDebug "并向左移动" . StrLen(part2)
-        Send("{Left " StrLen(part2) "}")
+        record_and_send "{Left " StrLen(part2) "}"
     }
     else {
         OutputDebug "用户输入不包含``号"
         OutputDebug "定位到：" . user_input
-        Send "^f"
+        record_and_send "^f"
         Sleep 50
-        SendText user_input
-        Send("{Escape}")
+        record_and_sendText user_input
+        record_and_send "{Escape}"
         Sleep 50
-        Send "{Escape}"
+        record_and_send "{Escape}"
     }
     OutputDebug "退出 jump_point_action 函数"
 }

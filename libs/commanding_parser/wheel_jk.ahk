@@ -1,5 +1,6 @@
 #Requires AutoHotkey v2.0
 
+#Include ../action/record_send.ahk
 ; 子命令模式： wheel_jk 滚动模式
 ; 如果handler_id不为空，并且还调用了这个handler那么默认由自己处理(由dispatch确定调用哪一个handler函数)
 ; 进行前缀匹配 匹配 LAltj Alt
@@ -21,9 +22,9 @@ wheel_jk_handler(keyName) {
     }
     switch keyName {
         case "j":
-            Send "{WheelDown 5}"
+            record_and_send "{WheelDown 5}"
         case "k":
-            Send "{WheelUp 5}"
+            record_and_send "{WheelUp 5}"
         default:
             ; 错误的输入，直接丢弃
             return

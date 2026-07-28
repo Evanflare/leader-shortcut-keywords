@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
 #Include ../../leader.ahk
+#Include ../action/record_send.ahk
 ; 子命令模式： space-f-jkjljk....
 ; 如果handler_id不为空，并且还调用了这个handler那么默认由自己处理(由dispatch确定调用哪一个handler函数)
 ; 进行前缀匹配 匹配 f[jk]
@@ -24,34 +25,34 @@ search_jk(keyName) {
     switch keyName {
         case "j":
             ; vscode经常出现按ctrl-f就将往当前光标所在字符串作为新的搜索关键词，我们需要还原之前的搜索关键词
-            Send "^f"
+            record_and_send "^f"
             ; 清空之前的输入
             ; `space-d-b`删除到行首
-            Send "^{a}"
-            Send "{Delete}"
+            record_and_send "^{a}"
+            record_and_send "{Delete}"
             Sleep 10
-            SendText search_key_words_memory
+            record_and_sendText search_key_words_memory
             Sleep 10
-            Send "{Escape}"
+            record_and_send "{Escape}"
             Sleep 10
-            Send "{Escape}"
+            record_and_send "{Escape}"
         case "k":
             ; vscode经常出现按ctrl-f就将往当前光标所在字符串作为新的搜索关键词，我们需要还原之前的搜索关键词
-            Send "^f"
+            record_and_send "^f"
             ; 清空之前的输入
             ; `space-d-b`删除到行首
-            Send "^{a}"
-            Send "{Delete}"
+            record_and_send "^{a}"
+            record_and_send "{Delete}"
             Sleep 10
-            SendText search_key_words_memory
+            record_and_sendText search_key_words_memory
             Sleep 10
             ; 然后连续向上2次
-            Send "{Shift down}"
-            Send "{Enter 2}"
-            Send "{Shift up}"
-            Send "{Escape}"
+            record_and_send "{Shift down}"
+            record_and_send "{Enter 2}"
+            record_and_send "{Shift up}"
+            record_and_send "{Escape}"
             Sleep 10
-            Send "{Escape}"
+            record_and_send "{Escape}"
     }
     ; 小框提示当前Leader键和followingKeys
     input_keys_tip_dialog()

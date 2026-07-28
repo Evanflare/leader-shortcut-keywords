@@ -3,6 +3,7 @@
 #Include ../leader.ahk
 #Include key_handler_dispatcher.ahk
 #Include command_end_parser.ahk
+#Include action/record_send.ahk
 ; 全局监听win键，在win按下后避免启用Leader捕获，避免影响原生 win 快捷键
 leader_hook_flag := true
 ; 定时器在win键松开300ms之后重置leader_hook_flag状态，避免误触发
@@ -88,7 +89,7 @@ leader_release_handler(leader_name) {
         }
         else {
             if followingControlKeys == "" && handler_mode == "default" {  ;送Space键
-                Send "{Space}"
+                record_and_send "{Space}"
             }
         }
         ; TODO: 这里潜藏了bug，如果同时按下两个Leader键，比如先按下Space，再按下CapsLock，然后释放Space，这时候会执行Leader2的命令，但是Leader1的状态没有被重置，导致后续的CapsLock释放会执行两次命令，所以这里我们需要在释放Space的时候重置SpaceActive状态，避免这个问题。
@@ -182,7 +183,7 @@ $CapsLock Up::
     OutputDebug "进入 wait_input 模式下的 capslock up 事件处理"
     OutputDebug "发送 enter"
     ; wait_input模式下，capslock变成“enter”键
-    Send "{Enter}"
+    record_and_send "{Enter}"
     OutputDebug "退出 wait_input 模式下的 capslock up 事件处理"
 }
 #HotIf
