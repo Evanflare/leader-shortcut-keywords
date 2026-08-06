@@ -32,6 +32,11 @@ show_history() {
     cancelBtn := my_gui.Add("Button", "w80", "取消")
     cancelBtn.OnEvent("Click", (*) => my_gui.Destroy())
 
+    ; 选中最终一项
+    if (History.Length > 0) {
+        lb.Choose(History.Length)  ; 默认选中最后一项
+    }
+
     my_gui.Show()
     return
 
