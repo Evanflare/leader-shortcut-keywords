@@ -112,14 +112,12 @@ space_command_parser() {
                 record_and_send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
                 record_and_send "{Home}" ; 这里是为了兼容一些不支持`ctrl-shift-b`的应用，比如Windows Terminal，直接发送Home键就可以了
             case "dd":
-                record_and_send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
+                ;record_and_send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
                 ; 使用更通用的删除行实现方式
                 record_and_send "{End}"
-                record_and_send "+{Home}"
+                record_and_send "+{Home 2}"  ; 选中整行
                 Sleep 50
-                record_and_send "{Delete}"
-                ; 删除\n
-                record_and_send "{Backspace}"
+                record_and_send "{Delete 2}"  ; 删除整行
             case "lc": ; 清空当前行`space-l-c` 清空当前行
                 record_and_send "{End}"
                 record_and_send "+{Home}"
