@@ -2,7 +2,47 @@
 
 #Include record_send.ahk
 
-quick_map := Map()
+global quick_map := Map()
+
+; ---------- 全局配置 ----------
+global quick_map := Map()
+global quick_map_file := A_ScriptDir "\data\quick_mapping.txt"   ; 存储文件路径
+
+; ---------- 加载持久化数据 ----------
+load_quick_map() {
+    global quick_map, quick_map_file
+    if !FileExist(quick_map_file)
+        return
+    quick_map := Map()
+    loop read, quick_map_file {
+        line := RTrim(A_LoopReadLine, "`n`r")
+        parts := StrSplit(line, "|")
+        if parts.Length >= 2
+            quick_map[parts[1]] := parts[2]
+    }
+}
+
+; ---------- 保存持久化数据 ----------
+save_quick_map() {
+    global quick_map, quick_map_file
+    content := ""
+    if !FileExist(quick_map_file) {
+        OutputDebug "quick mapping file path: " . quick_map_file
+        ; 确保文件所在的目录存在
+        SplitPath(quick_map_file, , &dir)
+        if dir != ""
+            DirCreate(dir)   ; 如果目录已存在，不会报错
+        FileAppend(content, quick_map_file)
+    }
+    for key, val in quick_map
+        content .= key "|" val "`n"
+    FileDelete(quick_map_file)
+    FileAppend(content, quick_map_file)
+}
+
+; ---------- 脚本初始化 ----------
+load_quick_map()   ; 启动时加载
+
 quick_mapping(cmd) {
     if SubStr(cmd, 1, 2) = "c " {
         OutputDebug("进入quick_mapping函数 c 分支，命令为: " . cmd)
@@ -16,7 +56,8 @@ quick_mapping(cmd) {
         ; 将选中内容与cmd组合成一个唯一的键
         key := SubStr(cmd, 3)
         quick_map[key] := selected_text
-
+        ; 持久化
+        save_quick_map
         OutputDebug("已将选中内容映射到key: " . key . "，内容为: " . selected_text)
     } else if SubStr(cmd, 1, 2) = "p " {
         OutputDebug("进入quick_mapping函数 p 分支，命令为: " . cmd)
