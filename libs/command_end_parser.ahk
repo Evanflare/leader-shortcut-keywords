@@ -11,6 +11,7 @@
 #Include action/review_time.ahk
 #Include action/record_send.ahk
 #Include action/quick_mapping.ahk
+#Include action/after_input_change_language.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
     OutputDebug("进入keysHandler函数，普通释放触发键的处理函数")
@@ -225,6 +226,9 @@ space_command_parser() {
                 record_and_send "{Up}"
                 Sleep 50
                 record_and_send "{End}{Enter}"
+            case "h":
+                ; 弥补性切换输入法
+                after_input_change_language()
             default:
                 switch {
                     case RegExMatch(shortcutKeywords, "^(\d+)$", &groupMatch): ; 匹配纯数字格式
