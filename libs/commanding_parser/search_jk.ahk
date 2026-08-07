@@ -32,6 +32,7 @@ search_jk(keyName) {
             record_and_send "{Delete}"
             Sleep 10
             record_and_sendText search_key_words_memory
+            OutputDebug "搜索下一个正则匹配项：" . search_key_words_memory
             Sleep 10
             record_and_send "{Escape}"
             Sleep 10
@@ -45,6 +46,7 @@ search_jk(keyName) {
             record_and_send "{Delete}"
             Sleep 10
             record_and_sendText search_key_words_memory
+            OutputDebug "搜索上一个正则匹配项：" . search_key_words_memory
             Sleep 10
             ; 然后连续向上2次
             record_and_send "{Shift down}"

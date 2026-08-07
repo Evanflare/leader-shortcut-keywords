@@ -21,6 +21,8 @@ jump_point_action(user_input) {
         record_and_send "^f"
         Sleep 50
         record_and_sendText find_string
+        ; 记录到search_key_words_memory
+        global search_key_words_memory := find_string
         record_and_send "{Escape}"
         Sleep 50
         record_and_send "{Escape}"
@@ -34,6 +36,8 @@ jump_point_action(user_input) {
         record_and_send "^f"
         Sleep 50
         record_and_sendText user_input
+        ; 记录到search_key_words_memory
+        global search_key_words_memory := user_input
         record_and_send "{Escape}"
         Sleep 50
         record_and_send "{Escape}"
