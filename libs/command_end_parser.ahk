@@ -113,11 +113,11 @@ space_command_parser() {
                 record_and_send "^+b"  ; `space-b` 光标行首 begin `ctrl-shift-b`
                 record_and_send "{Home}" ; 这里是为了兼容一些不支持`ctrl-shift-b`的应用，比如Windows Terminal，直接发送Home键就可以了
             case "dd":
-                ;record_and_send "^+d"  ; `space-d-d`删除行 `ctrl-shift-d`
                 ; 使用更通用的删除行实现方式
                 record_and_send "{End}"
                 record_and_send "+{Home 2}"  ; 选中整行
                 Sleep 50
+                record_and_send "^c" ; 删除前复制到剪切板
                 record_and_send "{Delete 2}"  ; 删除整行
             case "lc": ; 清空当前行`space-l-c` 清空当前行
                 record_and_send "{End}"
@@ -128,16 +128,20 @@ space_command_parser() {
                 ; `space-d-b`删除到行首
                 record_and_send "+{Home}"
                 Sleep 50
+                record_and_send "^c"
                 record_and_send "{Delete}"
             case "de":
                 ; `space-d-e`删除到行尾
                 record_and_send "+{End}"
                 Sleep 50
+                record_and_send "^c"
                 record_and_send "{Delete}"
             case "cls":
                 record_and_send "^+!c"  ; `space-c-l-s`清空终端 `ctrl-shift-alt-c`
             case "x":
-                record_and_send "{Delete}"  ; `space-x`删除当前字符 `delete`
+                ; 先复制，再删除，兼具剪切功能
+                record_and_send "^c"
+                record_and_send "{Delete}"  ; `space-x`删除当前字符(兼具剪切功能） `delete`
             case "gg":
                 record_and_send "^{Home}"  ; `space-g-g`跳转到文件开头 `ctrl-home`
             case "Shiftg":
@@ -252,7 +256,6 @@ space_command_parser() {
                         global search_key_words_memory := groupMatch[1]
                         record_and_send "^f"
                         ; 清空之前的输入
-                        ; `space-d-b`删除到行首
                         record_and_send "^{a}"
                         Sleep 50
                         record_and_send "{Delete}"

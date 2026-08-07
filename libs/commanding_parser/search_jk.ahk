@@ -27,7 +27,6 @@ search_jk(keyName) {
             ; vscode经常出现按ctrl-f就将往当前光标所在字符串作为新的搜索关键词，我们需要还原之前的搜索关键词
             record_and_send "^f"
             ; 清空之前的输入
-            ; `space-d-b`删除到行首
             record_and_send "^{a}"
             record_and_send "{Delete}"
             Sleep 10
@@ -41,7 +40,6 @@ search_jk(keyName) {
             ; vscode经常出现按ctrl-f就将往当前光标所在字符串作为新的搜索关键词，我们需要还原之前的搜索关键词
             record_and_send "^f"
             ; 清空之前的输入
-            ; `space-d-b`删除到行首
             record_and_send "^{a}"
             record_and_send "{Delete}"
             Sleep 10
