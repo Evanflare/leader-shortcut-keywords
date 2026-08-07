@@ -10,6 +10,7 @@
 #Include action/jump_matched_point.ahk
 #Include action/review_time.ahk
 #Include action/record_send.ahk
+#Include action/quick_mapping.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
     OutputDebug("进入keysHandler函数，普通释放触发键的处理函数")
@@ -420,8 +421,15 @@ capslock_command_wait_input(shortcutKeywords) {
         case "history":
             show_history
         default:
-            ; 不匹配，交给热键映射
-            capslock_command_hot_key userInput
+            ; 正则匹配
+            switch {
+                case RegExMatch(userInput, "([cp] .+)|(map)", &groupMatch):
+                    ; 匹配到以 p 或 c 开头，或者 map 的字符串，调用 quick_mapping 函数
+                    quick_mapping(userInput)
+                default:
+                    ; 不匹配，交给热键映射
+                    capslock_command_hot_key userInput
+            }
     }
 }
 
