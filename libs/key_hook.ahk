@@ -185,5 +185,6 @@ $CapsLock Up::
     ; wait_input模式下，capslock变成“enter”键
     record_and_send "{Enter}"
     OutputDebug "退出 wait_input 模式下的 capslock up 事件处理"
+    wait_input_hook_flag := false
 }
 #HotIf
