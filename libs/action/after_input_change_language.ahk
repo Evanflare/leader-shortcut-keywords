@@ -28,16 +28,23 @@ after_input_change_language() {
         record_and_send "^c"
         Sleep 10
         s := A_Clipboard
-        not_english_char_index := InStr(s, " ", , -1)
+        not_english_char_index := 0
         if RegExMatch(s, ".*([^A-Za-z])", &match) {
-            not_english_char_index := match.Pos[1]   ; 捕获组的起始位置
+            not_english_char_index := match.Pos[1]
         }
-        if not_english_char_index = 0 || StrLen(s) = not_english_char_index {
+        OutputDebug "搜索最近的非字母字符 index: " . not_english_char_index
+        if StrLen(s) = not_english_char_index {
+            ; 说明无须转换、翻译直接切换输入法
+            ; 切换输入法
+            global followingKeys := "cn"
+            space_command_parser()
+            return
+        } else if not_english_char_index = 0 {
             OutputDebug "未找到非字母字符，将之前输入的内容全部作为重新输入"
             ; 剪切
             record_and_send "^c"
             record_and_send "{Delete}"
-            Sleep 10
+            Sleep 50
             ; 切换输入法
             global followingKeys := "cn"
             space_command_parser()
@@ -50,7 +57,7 @@ after_input_change_language() {
             Sleep 10
             record_and_send "{Right " . not_english_char_index . "}"
             Sleep 10
-            ; 选中到之前光标的位置
+            ; 选中从目标位置到之前光标的位置
             record_and_send "{Shift Down}"
             Sleep 10
             Send "{Right " . StrLen(s) - not_english_char_index . "}"
@@ -60,7 +67,7 @@ after_input_change_language() {
             ; 剪切
             record_and_send "^c"
             record_and_send "{Delete}"
-            Sleep 10
+            Sleep 50
             ; 切换输入法
             global followingKeys := "cn"
             space_command_parser()
