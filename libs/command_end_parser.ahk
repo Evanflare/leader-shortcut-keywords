@@ -229,6 +229,12 @@ space_command_parser() {
             case "h":
                 ; 弥补性切换输入法
                 after_input_change_language()
+            case "vd":
+                ; 折叠
+                record_and_send "^+i"
+            case "vk":
+                ; 展开
+                record_and_send "^+m"
             default:
                 switch {
                     case RegExMatch(shortcutKeywords, "^(\d+)$", &groupMatch): ; 匹配纯数字格式
