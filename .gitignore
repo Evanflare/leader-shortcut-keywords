@@ -3,3 +3,8 @@
 .ignore*
 .vscode/
 data/
+dependencies/*/Examples/
+dependencies/*/doc/
+dependencies/*/LICENSE
+dependencies/*/README.md
+dependencies/*/.gitignore

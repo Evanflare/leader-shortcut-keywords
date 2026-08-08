@@ -12,6 +12,7 @@
 #Include action/record_send.ahk
 #Include action/quick_mapping.ahk
 #Include action/after_input_change_language.ahk
+#Include ../dependencies/ClipboardHistory-ah2/ClipboardHistory.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {
     OutputDebug("进入keysHandler函数，普通释放触发键的处理函数")
@@ -118,8 +119,26 @@ space_command_parser() {
                 record_and_send "{End}"
                 record_and_send "+{Home 2}"  ; 选中整行
                 Sleep 50
+                old_count := ClipboardHistory.Count
                 record_and_send "^c" ; 删除前复制到剪切板
-                record_and_send "{Delete 2}"  ; 删除整行
+                loop_times := 0
+                loop loop_times < 20 {
+                    if ClipboardHistory.Count > old_count {
+                        break
+                    }
+                    Sleep 100
+                }
+                if loop_times != 20 {
+                    OutputDebug "复制成功"
+                    OutputDebug "clip len: " . StrLen(A_Clipboard)
+                    OutputDebug "clip centent" . A_Clipboard
+                    OutputDebug "clip content reg all blank result: " . RegExMatch(A_Clipboard, "\s*")
+                    if !RegExMatch(A_Clipboard, "^\s*$") {
+                        record_and_send "{Delete}"  ; 防止空行多删除
+                        OutputDebug "认为" . A_Clipboard . "并非空行,所以多一个删除"
+                    }
+                }
+                record_and_send "{Delete}"
             case "lc": ; 清空当前行`space-l-c` 清空当前行
                 record_and_send "{End}"
                 record_and_send "+{Home}"
