@@ -59,11 +59,13 @@ show_history() {
 ; ---------- 记录并发送 ----------
 record_and_send(param) {
     add_to_history(FormatTime(A_Now, "HH:mm") . ": " . param)
+    OutputDebug FormatTime(A_Now, "HH:mm") . ": " . param
     Send(param)
 }
 
 ; ---------- 记录并发送 ----------
 record_and_sendText(param) {
     add_to_history(FormatTime(A_Now, "HH:mm") . ": " . param)
+    OutputDebug FormatTime(A_Now, "HH:mm") . ": " . param
     SendText(param)
 }
