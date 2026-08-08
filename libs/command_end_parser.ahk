@@ -161,8 +161,15 @@ space_command_parser() {
                 record_and_send "^+c" ; 复制到copyq复制缓冲区 A 号
             case "cb":
                 record_and_send "^+g" ; 复制到copyq复制缓冲区 B 号
-            case "cc":
-                record_and_send "^+h" ; 复制到copyq复制缓冲区 C 号
+            case "cc": ;复制当前行
+                record_and_send "{Home}"
+                record_and_send "{Shift Down}"
+                record_and_send "{End}"
+                record_and_send "{Shift Up}"
+                Sleep 50
+                record_and_send "^c"
+                record_and_send "{Escape}"
+                record_and_send "{End}"
             case "cd":
                 record_and_send "^!+i" ; 复制到copyq复制缓冲区 D 号
             case "x":
