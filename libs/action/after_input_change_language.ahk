@@ -1,6 +1,8 @@
 #Requires AutoHotkey v2.0
 
 #Include record_send.ahk
+#Include ../command_end_parser.ahk
+
 after_input_change_language() {
     ; 首先需要判断现在处于什么输入法
     ; 获取前台窗口
@@ -38,6 +40,7 @@ after_input_change_language() {
             ; 切换输入法
             global followingKeys := "cn"
             space_command_parser()
+            record_and_send "{Right}"
             return
         } else if not_english_char_index = 0 {
             OutputDebug "未找到非字母字符，将之前输入的内容全部作为重新输入"
