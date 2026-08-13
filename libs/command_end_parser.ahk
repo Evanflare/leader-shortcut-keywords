@@ -120,7 +120,7 @@ space_command_parser() {
                 record_and_send "+{Home 2}"  ; 选中整行
                 Sleep 50
                 old_count := ClipboardHistory.Count
-                record_and_send "^c" ; 删除前复制到剪切板
+                record_and_send "^x" ; 使用剪切
                 loop_times := 0
                 loop loop_times < 20 {
                     if ClipboardHistory.Count > old_count {
@@ -128,6 +128,9 @@ space_command_parser() {
                     }
                     Sleep 100
                 }
+                ; 使用更通用的删除行实现方式
+                record_and_send "{End}"
+                record_and_send "+{Home 2}"  ; 选中整行
                 if loop_times != 20 {
                     OutputDebug "复制成功"
                     OutputDebug "clip len: " . StrLen(A_Clipboard)
@@ -138,24 +141,20 @@ space_command_parser() {
                         OutputDebug "认为" . A_Clipboard . "并非空行,所以多一个删除"
                     }
                 }
-                record_and_send "{Delete}"
             case "lc": ; 清空当前行`space-l-c` 清空当前行
                 record_and_send "{End}"
                 record_and_send "+{Home}"
-                Sleep 50
-                record_and_send "{Delete}"
+                record_and_send "^x"
             case "db":
                 ; `space-d-b`删除到行首
                 record_and_send "+{Home}"
                 Sleep 50
-                record_and_send "^c"
-                record_and_send "{Delete}"
+                record_and_send "^x"
             case "de":
                 ; `space-d-e`删除到行尾
                 record_and_send "+{End}"
                 Sleep 50
-                record_and_send "^c"
-                record_and_send "{Delete}"
+                record_and_send "^x"
             case "cls":
                 record_and_send "^+!c"  ; `space-c-l-s`清空终端 `ctrl-shift-alt-c`
             case "x":
