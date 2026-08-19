@@ -422,6 +422,18 @@ capslock_command_wait_input(shortcutKeywords) {
                 WinRestore(hwnd)
                 WinShow(hwnd)
             }
+        case "terminal":
+            Run "D:\programming\wezterm\wezterm.exe", , , &pid
+            ; 2. 等待窗口出现（官方必用步骤）
+            hwnd := WinWait("ahk_pid " pid, , 2)
+            if (hwnd) {
+                ; 3. 官方激活（内部已含重试与 Alt 解锁）
+                WinActivate(hwnd)
+
+                ; 4. 确保窗口可见（防止被最小化/隐藏）
+                WinRestore(hwnd)
+                WinShow(hwnd)
+            }
         case "fy":
             ; 打开translate界面
             record_and_send "^!t"
@@ -448,6 +460,8 @@ capslock_command_wait_input(shortcutKeywords) {
                 case RegExMatch(userInput, "([cp] .+)|(map)", &groupMatch):
                     ; 匹配到以 p 或 c 开头，或者 map 的字符串，调用 quick_mapping 函数
                     quick_mapping(userInput)
+                case RegExMatch(userInput, "leader ([a-zA-z])", &groupMatch):
+                    record_and_send "^+q" . groupMatch[1]
                 default:
                     ; 不匹配，交给热键映射
                     capslock_command_hot_key userInput
