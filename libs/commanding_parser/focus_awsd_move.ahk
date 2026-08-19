@@ -12,7 +12,7 @@ focus_aswd_move(keyName) {
         current_input_keys := followingControlKeys . followingKeys . keyName
         ; 进行前缀匹配 匹配
         switch {
-            case RegExMatch(current_input_keys, "^Alt[asd]{2}$"):
+            case RegExMatch(current_input_keys, "^Alt[asdw]{2}$"):
                 ;匹配成功
                 global handler_id := "focus_aswd_move"
                 global handler_mode := "inner_mode" ; 子命令模式
