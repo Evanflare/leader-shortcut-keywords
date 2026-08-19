@@ -196,22 +196,6 @@ space_command_parser() {
                 record_and_send "^+!u"  ; `space-g-b` 跳转go back `ctrl-shift-alt-u`
             case "gf":
                 record_and_send "^+!x"  ; `space-g-f` 跳转go forward `ctrl-shift-alt-x`
-            case "zx":
-                record_and_send "+!x" ; `space-z-x`焦点在组视窗的下一个 `shift-alt-x`
-            case "zy":
-                record_and_send "+!y" ; `space-z-y`焦点在组视窗的下一个 `shift-alt-y`
-            case "zu":
-                record_and_send "+!u"  ; `space-z-u`焦点在组视窗的上一个 `shift-alt-u`
-            case "zz":
-                record_and_send "+!z"  ; `space-z-z`焦点在组视窗的上一个 `shift-alt-z`
-            case "z1":
-                record_and_send "^+!1"  ; `space-z-1`焦点在组1 `ctrl-shift-alt-1`
-            case "z2":
-                record_and_send "^+!2"  ; `space-z-2`焦点在组2 `ctrl-shift-alt-2`
-            case "z3":
-                record_and_send "^+!3"  ; `space-z-3`焦点在组3 `ctrl-shift-alt-3`
-            case "z4":
-                record_and_send "^+!4"  ; `space-z-4`焦点在组4 `ctrl-shift-alt-4`
             case "Altks":
                 record_and_send "^!k"  ; `space-alt-k-s`打开快捷键页面 `ctrl-alt-k`
             case "RAltks":
