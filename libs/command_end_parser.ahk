@@ -223,8 +223,6 @@ space_command_parser() {
                 record_and_send "^!j"  ; `space-alt-u-j`视角的意思，内容视角生 同样也是回收视角 `ctrl-alt-j`
             case "Altls":
                 record_and_send "^!l"  ; 'space-alt-l-s' 切换黑白模式 `ctrl-alt-l`
-            case "Altqp":
-                record_and_send "{F11}"
             case "cn":
                 record_and_send "^+9" ;`space-c-n`切换中文`space-e-n`切换英文 `ctrl-shift-9` `ctrl-shift-8`
             case "en":
