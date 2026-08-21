@@ -3,6 +3,7 @@
 #Include ../leader.ahk
 #Include key_handler_dispatcher.ahk
 #Include command_end_parser.ahk
+#Include commanding_parser/mouse_control.ahk
 #Include action/record_send.ahk
 ; 全局监听win键，在win按下后避免启用Leader捕获，避免影响原生 win 快捷键
 leader_hook_flag := true
@@ -110,7 +111,7 @@ leader_release_handler(leader_name) {
 LeaderDestructor() {
     OutputDebug("进入 LeaderDestructor 函数")
     global SpaceActive, CapsActive, followingKeys, followingControlKeys, handler_id, handler_mode,
-        exit_wait_input_should
+        exit_wait_input_should, mouse_control_mode
     handler_mode := "default"
     ; 重置状态
     followingControlKeys := "" ; 重置followingControlKeys字符串
@@ -118,6 +119,8 @@ LeaderDestructor() {
     handler_id := "" ; 重置handler_id为空
     SpaceActive := false
     CapsActive := false
+    mouse_control_mode := false
+    ExitMouseControl()
     ;重置提示窗
     ToolTip
     OutputDebug("退出LeaderDestructor函数")

@@ -6,7 +6,9 @@
 ; 进行前缀匹配 匹配 LAltj Alt
 wheel_jk_handler(keyName) {
     ; 当处理函数的id为空的时候，进行前缀匹配
-    global handler_id
+    global handler_id, SpaceActive
+    if !SpaceActive
+        return
     if handler_id == "" {
         global followingKeys, followingControlKeys
         current_input_keys := followingControlKeys . followingKeys . keyName

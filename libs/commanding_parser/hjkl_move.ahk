@@ -12,7 +12,9 @@
 leaderMoveKeyHandler(keyName) {
     OutputDebug("进入 leaderMoveKeyHandler, key down :" . keyName)
     ; 当处理函数的id为空的时候，进行前缀匹配
-    global handler_id
+    global handler_id, SpaceActive
+    if !SpaceActive
+        return
     if handler_id == "" {
         ; 如果不是space leader 则直接不处理
         if !SpaceActive {

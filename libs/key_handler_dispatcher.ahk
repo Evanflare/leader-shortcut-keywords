@@ -19,6 +19,7 @@ handlers["hjkl"] := leaderMoveKeyHandler
 handlers["wheel_jk"] := wheel_jk_handler
 handlers["search_jk"] := search_jk
 handlers["focus_aswd_move"] := focus_aswd_move
+handlers["mouse_control"] := mouse_control
 ; 可以继续添加……
 ; 默认处理函数（当所有 handler 都不ready时）
 DefaultHandler(keyName) {
