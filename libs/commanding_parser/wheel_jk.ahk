@@ -14,7 +14,7 @@ wheel_jk_handler(keyName) {
         current_input_keys := followingControlKeys . followingKeys . keyName
         ; 进行前缀匹配 匹配 LAltj Alt
         switch {
-            case RegExMatch(current_input_keys, "^(Altjj|Altkk)$"):
+            case RegExMatch(current_input_keys, "^(Alt[jk]{2})$"):
                 ;匹配成功
                 global handler_id := "wheel_jk"
                 global handler_mode := "inner_mode" ; 子命令模式
@@ -24,9 +24,9 @@ wheel_jk_handler(keyName) {
     }
     switch keyName {
         case "j":
-            record_and_send "{WheelDown 5}"
+            record_and_send "{WheelDown 2}"
         case "k":
-            record_and_send "{WheelUp 5}"
+            record_and_send "{WheelUp 2}"
         default:
             ; 错误的输入，直接丢弃
             return
