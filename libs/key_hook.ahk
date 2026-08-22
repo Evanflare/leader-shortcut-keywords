@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+; 在脚本启动时禁用 CapsLock 切换
+SetCapsLockState("AlwaysOff")
+
 #Include ../leader.ahk
 #Include key_handler_dispatcher.ahk
 #Include command_end_parser.ahk
@@ -48,9 +51,13 @@ $Space::
     }
     input_keys_tip_dialog
 }
+
 ; CapsLock按键的 按压事件捕捉
-$CapsLock::
+; 使用 $ 和 * 修饰符，强制拦截
+*$CapsLock::
 {
+    ; 再次确保状态关闭（安全措施）
+    SetCapsLockState("AlwaysOff")
     if handler_mode == "wait_input" {
         if handler_id != "capslock_wait_input" {
             ; 作为普通键入处理
@@ -72,8 +79,11 @@ $Space Up::
 }
 
 ; CapsLock释放事件捕捉
-$CapsLock Up::
+*$CapsLock Up::
 {
+    ; 释放时再次关闭，防止意外切换
+    SetCapsLockState("AlwaysOff")
+
     leader_release_handler "capslock"
 }
 #HotIf ; 结束条件热键的定义
