@@ -12,6 +12,7 @@
 #Include action/record_send.ahk
 #Include action/quick_mapping.ahk
 #Include action/after_input_change_language.ahk
+#Include action/jump_line_number.ahk
 #Include ../dependencies/ClipboardHistory-ah2/ClipboardHistory.ahk
 ; 普通释放触发键的处理函数
 KeysHandler(key) {

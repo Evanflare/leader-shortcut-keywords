@@ -13,6 +13,8 @@ global handlers := Map()             ; 存储所有处理函数，键为命令ID
 #Include ./commanding_parser/wheel_jk.ahk
 #Include ./commanding_parser/search_jk.ahk
 #Include ./commanding_parser/focus_awsd_move.ahk
+#Include ./commanding_parser/mouse_control.ahk
+#Include ./commanding_parser/windows_control.ahk
 ; 注意注册顺序：先注册的会优先获得处理权（当 ready_command_id 为空时）
 ; 最好在handler目录排查冲突的快捷键，避免发生冲突
 handlers["hjkl"] := leaderMoveKeyHandler
@@ -20,6 +22,7 @@ handlers["wheel_jk"] := wheel_jk_handler
 handlers["search_jk"] := search_jk
 handlers["focus_aswd_move"] := focus_aswd_move
 handlers["mouse_control"] := mouse_control
+handlers["windows_control"] := windows_control
 ; 可以继续添加……
 ; 默认处理函数（当所有 handler 都不ready时）
 DefaultHandler(keyName) {
